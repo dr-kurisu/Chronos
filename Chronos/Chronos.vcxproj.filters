@@ -2,8 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="CH\Include\Monitor\Windows\WindowsWatcher.h" />
+    <ClInclude Include="CH\Include\Core\Common.h" />
+    <ClInclude Include="CH\Include\Core\Core.h" />
+    <ClInclude Include="CH\Include\Core\Logger.h" />
+    <ClInclude Include="CH\Include\Core\Base.h" />
+    <ClInclude Include="CH\Include\Application\Application.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WindowsWatcher.cpp" />
+    <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
+    <ClCompile Include="CH\Source\Core\Logger.cpp" />
+    <ClCompile Include="CH\Source\Core\Base.cpp" />
+    <ClCompile Include="App\main.cpp" />
+    <ClCompile Include="CH\Source\Application\Application.cpp" />
+    <ClCompile Include="CH\Source\Application\Win32\Win32Application.cpp" />
   </ItemGroup>
 </Project>

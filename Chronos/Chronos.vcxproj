@@ -19,10 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CH\Include\Application\Application.h" />
+    <ClInclude Include="CH\Include\Core\Base.h" />
+    <ClInclude Include="CH\Include\Core\Common.h" />
+    <ClInclude Include="CH\Include\Core\Core.h" />
+    <ClInclude Include="CH\Include\Core\Logger.h" />
     <ClInclude Include="CH\Include\Monitor\Windows\WindowsWatcher.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WindowsWatcher.cpp" />
+    <ClCompile Include="App\main.cpp" />
+    <ClCompile Include="CH\Source\Application\Application.cpp" />
+    <ClCompile Include="CH\Source\Application\Win32\Win32Application.cpp" />
+    <ClCompile Include="CH\Source\Core\Base.cpp" />
+    <ClCompile Include="CH\Source\Core\Logger.cpp" />
+    <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -77,7 +87,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>timeline/Include;timeline/Source;$(IncludePath)</IncludePath>
+    <IncludePath>CH/Include;CH/Source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -117,9 +127,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

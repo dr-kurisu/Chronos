@@ -14,7 +14,7 @@ namespace chronos {
 			Info
 		};
 
-		explicit Logger(LogLevel logLevel = LogLevel::Error);
+		explicit Logger(LogLevel level = LogLevel::Error);
 		~Logger();
 		// void log(LogLevel level, const char* msg);
 		template<typename... Args>
@@ -24,8 +24,9 @@ namespace chronos {
 		}
 
 	private:
-		LogLevel m_logLevel = LogLevel::Error;
+		LogLevel m_level = LogLevel::Error;
 		void _log(LogLevel level, const char* message);
+		const char* logLevelToString(LogLevel level);
 	};
 }
 

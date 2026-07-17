@@ -1,7 +1,7 @@
 #pragma once
 #include <Core/Common.h>
 
-namespace Chronos {
+namespace chronos {
 	class Base {
 		disable_copy_and_move(Base);
 	public:

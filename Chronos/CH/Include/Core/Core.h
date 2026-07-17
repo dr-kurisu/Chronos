@@ -1,4 +1,6 @@
 #pragma once
+//#include <stdexcept>
+#include <memory>
 
 #define disable_copy_and_move(Class)	\
 protected:	\
@@ -7,7 +9,13 @@ protected:	\
 	Class& operator=(Class&&) = delete;	\
 	Class(Class&&) = delete; \
 
-namespace Chronos {
+namespace chronos {
 	class Logger;
 	class WindowsWatcher;
+
+
+
+
+	template <typename T> using UniquePtr = std::unique_ptr<T>;
+	template <typename T> using RefPtr = std::shared_ptr<T>;
 }
