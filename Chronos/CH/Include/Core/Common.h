@@ -10,4 +10,13 @@ namespace chronos {
 	struct ApplicationDesc {
 		Logger::LogLevel level;
 	};
+
+	struct WindowsWatcherDesc {
+		BaseDesc base;
+		float duration;
+	};
+
+	struct MonitorDesc {
+		BaseDesc base;
+	};
 };

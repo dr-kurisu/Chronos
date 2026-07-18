@@ -1,9 +1,16 @@
 #include <Application/Application.h>
-#include <thread>
+#include <Windows.h>
 
 void chronos::Application::run() {
-	while (m_isRunning)
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-	}
+    MSG msg;
+
+    while (m_isRunning)
+    {
+        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) 
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+    }
 }

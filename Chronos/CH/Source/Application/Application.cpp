@@ -1,10 +1,11 @@
 #include <Application/Application.h>
+#include <Monitor/Monitor.h>
 #include <Core/Logger.h>
-#include <iostream>
 
 chronos::Application::Application(const ApplicationDesc& desc)
 {
 	m_logger = std::make_unique<Logger>(desc.level);
+	m_monitor = std::make_unique<Monitor>(MonitorDesc{ *m_logger });
 	ChronosLogInfo("Chronos Lanuched");
 }
 

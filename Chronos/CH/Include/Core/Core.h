@@ -12,7 +12,11 @@ protected:	\
 namespace chronos {
 	class Logger;
 	class WindowsWatcher;
+	class Monitor;
 
+
+	struct Activity;
+	struct WindowInfo;
 
 
 
