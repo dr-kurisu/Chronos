@@ -5,6 +5,13 @@
 chronos::Monitor::Monitor(const MonitorDesc& desc) : Base(desc.base)
 {
 	m_windowsWatcher = std::make_unique<WindowsWatcher>(WindowsWatcherDesc{ m_logger , 1.0f });
+	m_windowsWatcher->setWindowsChangedCallback(
+		[this](const WindowInfo& info)
+		{
+			if (m_windowChangedCallback)
+				m_windowChangedCallback(info);
+		}
+	);
 	m_windowsWatcher->registerHooks();
 }
 
@@ -12,4 +19,10 @@ chronos::Monitor::~Monitor()
 {
 	m_windowsWatcher->unregisterHooks();
 }
+
+void chronos::Monitor::setWindowChangedCallback(WindowChangedCallback callback)
+{
+	m_windowChangedCallback = callback;
+}
+
 

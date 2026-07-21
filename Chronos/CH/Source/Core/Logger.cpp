@@ -1,5 +1,6 @@
 #include <Core/Logger.h>
 #include <iostream>
+#include <sstream>
 
 chronos::Logger::Logger(LogLevel level) : m_level(level)
 {
@@ -13,8 +14,27 @@ chronos::Logger::~Logger()
 
 void chronos::Logger::_log(LogLevel level, const char* message)
 {
-	if (level > m_level) return;
-	std::clog << "[Chronos " << chronos::Logger::logLevelToString(level) << "]: " << message << "\n";
+    std::string prefix =
+        std::format("[Chronos {}]: ", logLevelToString(level));
+
+    std::istringstream iss(message);
+    std::string line;
+
+    bool first = true;
+    while (std::getline(iss, line))
+    {
+        // deal with first line
+        if (first)
+        {
+            std::clog << prefix << line << '\n';
+            first = false;
+        }
+        // Add indentation with other lines
+        else
+        {
+            std::clog << std::string(prefix.size(), ' ') << line << '\n';
+        }
+    }
 }
 
 const char* chronos::Logger::logLevelToString(LogLevel level)
@@ -26,4 +46,3 @@ const char* chronos::Logger::logLevelToString(LogLevel level)
 	default: return "Unknown";
 	}
 }
-

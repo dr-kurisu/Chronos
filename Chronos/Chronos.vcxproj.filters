@@ -11,6 +11,8 @@
     <ClInclude Include="CH\Include\Activity\ActivityManager.h" />
     <ClInclude Include="CH\Include\Monitor\Monitor.h" />
     <ClInclude Include="CH\Include\Core\Encoding.h" />
+    <ClInclude Include="CH\Include\Activity\ActivityStorage.h" />
+    <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
@@ -22,5 +24,7 @@
     <ClCompile Include="CH\Source\Activity\ActivityManager.cpp" />
     <ClCompile Include="CH\Source\Monitor\Monitor.cpp" />
     <ClCompile Include="CH\Source\Core\Encoding.cpp" />
+    <ClCompile Include="CH\Source\Activity\ActivityStorage.cpp" />
+    <ClCompile Include="CH\Source\Activity\ActivityUtils.cpp" />
   </ItemGroup>
 </Project>

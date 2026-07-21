@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <Windows.h>
+#include <chrono>
 
 namespace chronos {
     struct WindowInfo
@@ -9,17 +10,32 @@ namespace chronos {
         DWORD pid;
         std::string title;
         std::string processName;
-
-        bool isValid() const
-        {
-            return hwnd != nullptr;
-        }
     };
 
     struct Activity
     {
-        std::string appName;
-        std::string windowTitle;
-        uint32_t pid;
+        WindowInfo window;
+        std::chrono::system_clock::time_point startTime;
+        std::chrono::system_clock::time_point endTime;
+
+        Activity(const WindowInfo& info)
+            : window(info),
+            startTime(std::chrono::system_clock::now()),
+            endTime(startTime)
+        {
+        }
+
+        void finish()
+        {
+            endTime = std::chrono::system_clock::now();
+        }
+
+
+        std::chrono::seconds duration() const
+        {
+            return std::chrono::duration_cast<std::chrono::seconds>(
+                endTime - startTime
+            );
+        }
     };
 }

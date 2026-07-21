@@ -13,7 +13,7 @@ namespace chronos {
 	class Logger;
 	class WindowsWatcher;
 	class Monitor;
-
+	class ActivityManager;
 
 	struct Activity;
 	struct WindowInfo;

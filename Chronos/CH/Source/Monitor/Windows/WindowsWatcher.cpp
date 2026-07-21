@@ -76,6 +76,11 @@ chronos::WindowInfo chronos::WindowsWatcher::getWindowInfo(HWND hwnd)
     return info;
 }
 
+void chronos::WindowsWatcher::setWindowsChangedCallback(WindowChangedCallback callback)
+{
+    m_windowChangedCallback = callback;
+}
+
 void CALLBACK chronos::WindowsWatcher::WinEventProc(
     HWINEVENTHOOK hook,
     DWORD event,
@@ -99,9 +104,14 @@ void CALLBACK chronos::WindowsWatcher::WinEventProc(
 void chronos::WindowsWatcher::handleForegroundChanged(HWND hwnd)
 {
     WindowInfo info = getWindowInfo(hwnd);
-    ChronosLogInfo(
-        "pid: {}\n"
-        "title: {}\n"
-        "processName: {}\n\n",
-        info.pid, info.title, info.processName);
+    //ChronosLogInfo(
+    //    "pid: {}\n"
+    //    "title: {}\n"
+    //    "processName: {}\n\n",
+    //    info.pid, info.title, info.processName);
+
+    // Tell Monitor
+    if (m_windowChangedCallback) {
+        m_windowChangedCallback(info);
+    }
 }

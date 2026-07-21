@@ -15,6 +15,7 @@ namespace chronos {
 	private:
 		UniquePtr<Logger> m_logger{};
 		UniquePtr<Monitor> m_monitor{};
+		UniquePtr<ActivityManager> m_acManager{};
 
 		bool m_isRunning = true;
 	};
