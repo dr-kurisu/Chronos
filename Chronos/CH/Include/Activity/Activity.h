@@ -2,6 +2,7 @@
 #include <string>
 #include <Windows.h>
 #include <chrono>
+#include <unordered_set>
 
 namespace chronos {
     struct WindowInfo
@@ -12,11 +13,37 @@ namespace chronos {
         std::string processName;
     };
 
+    enum class ActivityCategory
+    {
+        Unknown,
+        Productive,
+        Neutral,
+        Distracting
+    };
+
+    enum class ActivityTag
+    {
+        Browser,
+        Code,
+        Study,
+        Work,
+        Game,
+        Video,
+        Music,
+        Chat,
+        Social,
+        FileManager,
+        Terminal,
+        Trash
+    };
+
     struct Activity
     {
         WindowInfo window;
         std::chrono::system_clock::time_point startTime;
         std::chrono::system_clock::time_point endTime;
+        ActivityCategory category = ActivityCategory::Unknown;
+        std::unordered_set<ActivityTag> tags;
 
         Activity(const WindowInfo& info)
             : window(info),
@@ -29,7 +56,6 @@ namespace chronos {
         {
             endTime = std::chrono::system_clock::now();
         }
-
 
         std::chrono::seconds duration() const
         {

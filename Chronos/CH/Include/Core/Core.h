@@ -14,6 +14,7 @@ namespace chronos {
 	class WindowsWatcher;
 	class Monitor;
 	class ActivityManager;
+	class ActivityClassifier;
 
 	struct Activity;
 	struct WindowInfo;

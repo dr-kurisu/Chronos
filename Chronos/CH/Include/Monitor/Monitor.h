@@ -14,6 +14,7 @@ namespace chronos {
 		void setWindowChangedCallback(
 			WindowChangedCallback callback
 		);
+		WindowInfo getCurrentForeground();
 	private:
 		UniquePtr<WindowsWatcher> m_windowsWatcher{};
 		WindowChangedCallback m_windowChangedCallback;

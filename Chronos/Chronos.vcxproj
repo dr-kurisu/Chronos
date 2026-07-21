@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CH\Include\Activity\ActivityClassifier.h" />
     <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
     <ClInclude Include="CH\Include\Activity\ActivityStorage.h" />
     <ClInclude Include="CH\Include\Activity\Activity.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="CH\Include\Core\Encoding.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CH\Source\Activity\ActivityClassifier.cpp" />
     <ClCompile Include="CH\Source\Activity\ActivityUtils.cpp" />
     <ClCompile Include="CH\Source\Activity\ActivityStorage.cpp" />
     <ClCompile Include="CH\Source\Activity\ActivityManager.cpp" />

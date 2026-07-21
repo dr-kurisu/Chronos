@@ -25,4 +25,9 @@ void chronos::Monitor::setWindowChangedCallback(WindowChangedCallback callback)
 	m_windowChangedCallback = callback;
 }
 
+chronos::WindowInfo chronos::Monitor::getCurrentForeground()
+{
+	return m_windowsWatcher->getCurrentForeground();
+}
+
 

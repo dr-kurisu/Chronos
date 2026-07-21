@@ -12,8 +12,12 @@ namespace chronos {
 		void endCurrentActivity();
 		const Activity* getCurrentActivity() const;
 		void printCurrentActivity();
+		void classifyCurrentActivity();
+		void onWindowChanged(const WindowInfo& info);
 		void clear();
 	private:
 		std::vector<Activity> m_activities{};
+		std::chrono::seconds minDuration{ 10 };
+		UniquePtr<ActivityClassifier> m_classifier{};
 	};
 }

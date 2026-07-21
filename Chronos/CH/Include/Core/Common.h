@@ -2,6 +2,7 @@
 #include <Core/Core.h>
 #include <Core/Logger.h>
 #include <filesystem>
+#include <chrono>
 
 namespace chronos {
 	struct BaseDesc {
@@ -21,11 +22,16 @@ namespace chronos {
 		BaseDesc base;
 	};
 
+	struct ActivityClassifierDesc {
+		BaseDesc base;
+	};
+
 	struct ActivityManagerDesc {
 		BaseDesc base;
 		bool enableStorage = true;
 		bool captureWindowTitle = true;
 		bool captureProcessPath = true;
+		std::chrono::seconds minDuration{ 10 };
 		size_t maxEventCacheSize = 128;
 		std::filesystem::path storagePath = "data/activity";
 	};
