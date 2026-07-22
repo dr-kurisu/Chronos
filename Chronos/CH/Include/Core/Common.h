@@ -33,6 +33,11 @@ namespace chronos {
 		bool captureProcessPath = true;
 		std::chrono::seconds minDuration{ 10 };
 		size_t maxEventCacheSize = 128;
-		std::filesystem::path storagePath = "data/activity";
+		std::filesystem::path storagePath = "";
+	};
+
+	struct SQLiteACStorageDesc {
+		BaseDesc base;
+		std::filesystem::path storagePath = "";
 	};
 };

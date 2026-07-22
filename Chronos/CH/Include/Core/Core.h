@@ -15,6 +15,7 @@ namespace chronos {
 	class Monitor;
 	class ActivityManager;
 	class ActivityClassifier;
+	class Statement;
 
 	struct Activity;
 	struct WindowInfo;

@@ -65,7 +65,7 @@ void chronos::ActivityManager::onWindowChanged(const WindowInfo& info)
 {
     endCurrentActivity();
     const Activity* ac = getCurrentActivity();
-    // no activity
+    // no activity exisit
     if (!ac) {
         createCurrentActivity(info);
         return;

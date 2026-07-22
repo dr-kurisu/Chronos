@@ -24,6 +24,7 @@
     <ClInclude Include="CH\Include\Activity\ActivityStorage.h" />
     <ClInclude Include="CH\Include\Activity\Activity.h" />
     <ClInclude Include="CH\Include\Activity\ActivityManager.h" />
+    <ClInclude Include="CH\Include\Activity\IActivityStorage.h" />
     <ClInclude Include="CH\Include\Application\Application.h" />
     <ClInclude Include="CH\Include\Core\Base.h" />
     <ClInclude Include="CH\Include\Core\Common.h" />
