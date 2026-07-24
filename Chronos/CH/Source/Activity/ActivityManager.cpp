@@ -2,10 +2,17 @@
 #include <Activity/Activity.h>
 #include <Activity/ActivityUtils.h>
 #include <Activity/ActivityClassifier.h>
+#include <Activity/SQLiteActivityStorage.h>
 
 chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): Base(desc.base), minDuration(desc.minDuration)
 {
     m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base });
+    m_storage = std::make_unique<SQLiteActivityStorage>(SQLiteACStorageDesc{ desc.base, desc.storagePath });
+
+    User user;
+    user.name = "TestUser";
+    user.passwordHash = "test_hash";
+    m_storage->createUser(user);
 }
 
 chronos::ActivityManager::~ActivityManager()
@@ -80,6 +87,7 @@ void chronos::ActivityManager::onWindowChanged(const WindowInfo& info)
     // duration check
     if (ac->duration() < minDuration) {
         // ChronosLogInfo("Duration is less than {}.", minDuration);
+        createCurrentActivity(info);
         return;
     }
 

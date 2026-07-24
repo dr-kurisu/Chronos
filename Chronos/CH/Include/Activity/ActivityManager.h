@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/Base.h>
+#include <Activity/IActivityStorage.h>
 
 namespace chronos {
 	class ActivityManager : public Base {
@@ -17,7 +18,9 @@ namespace chronos {
 		void clear();
 	private:
 		std::vector<Activity> m_activities{};
-		std::chrono::seconds minDuration{ 10 };
 		UniquePtr<ActivityClassifier> m_classifier{};
+		UniquePtr<IActivityStorage> m_storage{};
+
+		std::chrono::seconds minDuration{ 10 };
 	};
 }

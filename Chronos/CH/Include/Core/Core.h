@@ -1,6 +1,7 @@
 #pragma once
-//#include <stdexcept>
 #include <memory>
+#include <string>
+#include <cstdint>
 
 #define disable_copy_and_move(Class)	\
 protected:	\
@@ -10,6 +11,10 @@ protected:	\
 	Class(Class&&) = delete; \
 
 namespace chronos {
+	using UserId = std::int64_t;
+	using ActivityId = std::int64_t;
+	using Timestamp = std::int64_t;
+
 	class Logger;
 	class WindowsWatcher;
 	class Monitor;
@@ -21,6 +26,13 @@ namespace chronos {
 	struct WindowInfo;
 
 
+	struct User
+	{
+		UserId id{};
+		std::string name;
+		std::string passwordHash;
+		Timestamp createdTime{};
+	};
 
 	template <typename T> using UniquePtr = std::unique_ptr<T>;
 	template <typename T> using RefPtr = std::shared_ptr<T>;

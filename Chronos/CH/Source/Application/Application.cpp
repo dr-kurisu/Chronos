@@ -8,12 +8,16 @@ chronos::Application::Application(const ApplicationDesc& desc)
 {
 	m_logger = std::make_unique<Logger>(desc.level);
 
+	ChronosLogInfo("Creating ActivityManager...");
 	m_acManager = std::make_unique<ActivityManager>(
 		ActivityManagerDesc{
 			.base = *m_logger,
-			.minDuration = std::chrono::seconds{2}
+			.minDuration = std::chrono::seconds{2},
+			.storagePath = "CH/Data/chronos.db"
 		}
 	);
+
+	ChronosLogInfo("Creating Monitor...");
 	m_monitor = std::make_unique<Monitor>(MonitorDesc{ *m_logger });
 	m_monitor->setWindowChangedCallback(
 		[this](const WindowInfo& info)

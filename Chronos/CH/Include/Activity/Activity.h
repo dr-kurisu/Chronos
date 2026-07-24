@@ -3,10 +3,9 @@
 #include <Windows.h>
 #include <chrono>
 #include <unordered_set>
+#include <Core/Core.h>
 
 namespace chronos {
-    using ActivityId = std::uint64_t;
-
     struct WindowInfo
     {
         HWND hwnd;
@@ -41,7 +40,7 @@ namespace chronos {
 
     struct Activity
     {
-        ActivityId id = 0u;
+        ActivityId id{};
         WindowInfo window;
         std::chrono::system_clock::time_point startTime;
         std::chrono::system_clock::time_point endTime;

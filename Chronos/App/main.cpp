@@ -1,5 +1,6 @@
 #include <Application/Application.h>
 #include <Windows.h>
+#include <iostream>
 
 int main() {
 	SetConsoleOutputCP(CP_UTF8);
@@ -10,13 +11,17 @@ int main() {
 		application.run();
 		return 0;
 	}
-	catch (const std::runtime_error&) {
-		return EXIT_FAILURE;
-	}
-	catch (const std::invalid_argument&) {
+	catch (const std::exception& e)
+	{
+		std::cerr
+			<< "[Fatal] "
+			<< e.what()
+			<< std::endl;
+
 		return EXIT_FAILURE;
 	}
 	catch (...) {
+		std::cerr << "UNKNOWN ERROR" << std::endl;
 		return EXIT_FAILURE;
 	}
 

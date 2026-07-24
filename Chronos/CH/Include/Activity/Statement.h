@@ -23,6 +23,11 @@ namespace chronos {
             return m_stmt;
         }
 
+        explicit operator bool() const
+        {
+            return m_stmt != nullptr;
+        }
+
     private:
         sqlite3_stmt* m_stmt{};
     };
