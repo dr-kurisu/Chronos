@@ -335,15 +335,3 @@ Statement SQLiteActivityStorage::prepare(std::string_view sql)
     }
     return Statement(stmt);
 }
-
-Statement SQLiteActivityStorage::prepareOrThrow(std::string_view sql)
-{
-    Statement stmt = prepare(sql);
-
-    if (!stmt.get())
-    {
-        throw std::runtime_error(sqlite3_errmsg(m_db));
-    }
-
-    return stmt;
-}

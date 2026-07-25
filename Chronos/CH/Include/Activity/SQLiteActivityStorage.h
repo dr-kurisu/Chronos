@@ -46,7 +46,6 @@ namespace chronos {
 		bool execute(std::string_view sql);
 		bool execute(Statement& stmt);
 		Statement prepare(std::string_view sql);
-		Statement prepareOrThrow(std::string_view sql);
 	private:
 		sqlite3* m_db{};
 	};
