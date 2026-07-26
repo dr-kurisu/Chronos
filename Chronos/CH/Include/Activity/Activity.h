@@ -2,8 +2,8 @@
 #include <string>
 #include <Windows.h>
 #include <chrono>
-#include <unordered_set>
 #include <Core/Core.h>
+#include <Activity/ActivityTag.h>
 
 namespace chronos {
     struct WindowInfo
@@ -22,30 +22,17 @@ namespace chronos {
         Distracting
     };
 
-    enum class ActivityTag
-    {
-        Browser,
-        Code,
-        Study,
-        Work,
-        Game,
-        Video,
-        Music,
-        Chat,
-        Social,
-        FileManager,
-        Terminal,
-        Trash
-    };
+
 
     struct Activity
     {
-        ActivityId id{};
+        ActivityId id{-1};
+        UserId userId{-1};
         WindowInfo window;
         std::chrono::system_clock::time_point startTime;
         std::chrono::system_clock::time_point endTime;
         ActivityCategory category = ActivityCategory::Unknown;
-        std::unordered_set<ActivityTag> tags;
+        ActivityTags tags{0};
 
         Activity(const WindowInfo& info)
             : window(info),
@@ -64,6 +51,22 @@ namespace chronos {
             return std::chrono::duration_cast<std::chrono::seconds>(
                 endTime - startTime
             );
+        }
+
+        bool isValid() const 
+        {
+            if (userId <= 0) return false;
+            if (window.hwnd == nullptr) return false;
+            if (window.pid == 0) return false;
+            if (window.processName.empty()) return false;
+            if (window.title.empty()) return false;
+            if (endTime < startTime) return false;
+            return true;
+        }
+
+        int64_t convertTimePoint(std::chrono::system_clock::time_point timePoint) const
+        {
+            return std::chrono::duration_cast<std::chrono::milliseconds>(timePoint.time_since_epoch()).count();
         }
     };
 }

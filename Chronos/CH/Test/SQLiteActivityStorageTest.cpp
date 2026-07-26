@@ -15,11 +15,24 @@ namespace chronos {
             };
 
             m_storage = std::make_unique<SQLiteActivityStorage>(SQLiteDesc);
+
+            User user;
+            user.name = "Test";
+            user.passwordHash = "123";
+            testUserId = m_storage->createUser(user);
         }
 
     protected:
         std::unique_ptr<Logger> m_logger;
         std::unique_ptr<SQLiteActivityStorage> m_storage;
+
+        int testUserId;
+        WindowInfo exampleWindow{
+            .hwnd = reinterpret_cast<HWND>(0x00123456),
+            .pid = 12345,
+            .title = "code.cpp",
+            .processName = "code.exe"
+        };
     public:
         Logger& getLogger() const noexcept
         {
@@ -92,7 +105,7 @@ namespace chronos {
         auto result = m_storage->removeUser(-1);
         ASSERT_FALSE(result);
         // Remove user with non-exist id
-        auto result2 = m_storage->removeUser(1);
+        auto result2 = m_storage->removeUser(100);
         ASSERT_FALSE(result2);
     }
 
@@ -146,5 +159,54 @@ namespace chronos {
         ASSERT_FALSE(result3);
     }
 
+    TEST_F(SQLiteActivityStorageTest, FindUser)
+    {
+        User user1;
+        user1.name = "Alise";
+        user1.passwordHash = "123";
+        UserId id = m_storage->createUser(user1);
+        auto result = m_storage->findUser(id);
 
+        // Find valid user
+        EXPECT_EQ(result->id, id);
+        EXPECT_EQ(result->name, user1.name);
+        EXPECT_EQ(result->passwordHash, user1.passwordHash);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, FindInvalidUser)
+    {
+
+    }
+
+    TEST_F(SQLiteActivityStorageTest, InsertValidActivity)
+    {
+        Activity ac(exampleWindow);
+        ac.userId = testUserId;
+        auto result = m_storage->insertActivity(ac);
+        EXPECT_GT(result, 0);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, InsertInvalidActivity)
+    {
+        // Activity without window title
+        WindowInfo exampleWindow2 = exampleWindow;
+        exampleWindow2.title = "";
+        Activity ac(exampleWindow2);
+        auto result1 = m_storage->insertActivity(ac);
+        EXPECT_EQ(result1, -1);
+
+        // Activity with invalid window pid
+        WindowInfo exampleWindow3 = exampleWindow;
+        exampleWindow3.pid = 0;
+        Activity ac1(exampleWindow3);
+        auto result2 = m_storage->insertActivity(ac1);
+        EXPECT_EQ(result2, -1);
+
+        // To be continued ...
+    }
+
+    TEST_F(SQLiteActivityStorageTest, 1)
+    {
+
+    }
 }

@@ -11,7 +11,7 @@ namespace chronos
         static std::string timePointToString(
             const std::chrono::system_clock::time_point& time
         );
-        static std::string tagToString(ActivityTag tag);
-        static std::string tagsToString(const std::unordered_set<ActivityTag>& tags);
+        static std::string tagToString(ActivityTags tags);
+        static std::string tagsToString(ActivityTags tags);
     };
 }

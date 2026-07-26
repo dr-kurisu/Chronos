@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CH\Include\Activity\ActivityClassifier.h" />
+    <ClInclude Include="CH\Include\Activity\ActivityTag.h" />
     <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
     <ClInclude Include="CH\Include\Activity\SQLiteActivityStorage.h" />
     <ClInclude Include="CH\Include\Activity\Activity.h" />

@@ -24,41 +24,59 @@ namespace chronos
         return ss.str();
     }
 
-    std::string ActivityUtils::tagToString(ActivityTag tag)
+    std::string ActivityUtils::tagToString(ActivityTags tags)
     {
-        switch (tag)
+        switch (tags)
         {
-        case ActivityTag::Browser:      return "Browser";
-        case ActivityTag::Code:         return "Code";
-        case ActivityTag::Study:        return "Study";
-        case ActivityTag::Work:         return "Work";
-        case ActivityTag::Game:         return "Game";
-        case ActivityTag::Video:        return "Video";
-        case ActivityTag::Music:        return "Music";
-        case ActivityTag::Chat:         return "Chat";
-        case ActivityTag::Social:       return "Social";
-        case ActivityTag::FileManager:  return "FileManager";
-        case ActivityTag::Terminal:     return "Terminal";
-        case ActivityTag::Trash:        return "Trash";
+        case ActivityTags::Browser:     return "Browser";
+        case ActivityTags::Code:        return "Code";
+        case ActivityTags::Study:       return "Study";
+        case ActivityTags::Work:        return "Work";
+        case ActivityTags::Game:        return "Game";
+        case ActivityTags::Video:       return "Video";
+        case ActivityTags::Music:       return "Music";
+        case ActivityTags::Chat:        return "Chat";
+        case ActivityTags::Social:      return "Social";
+        case ActivityTags::FileManager: return "FileManager";
+        case ActivityTags::Terminal:    return "Terminal";
+        case ActivityTags::Trash:       return "Trash";
+        case ActivityTags::None:        return "None";
         }
 
         return "Unknown";
     }
 
-    std::string ActivityUtils::tagsToString(const std::unordered_set<ActivityTag>& tags)
+    std::string ActivityUtils::tagsToString(ActivityTags tags)
     {
-        if (tags.empty())
+        if (tags == ActivityTags::None)
             return "None";
 
         std::string result;
 
-        for (const auto& tag : tags)
-        {
-            if (!result.empty())
-                result += ", ";
+        auto append = [&](ActivityTags tag)
+            {
+                if ((static_cast<uint32_t>(tags) &
+                    static_cast<uint32_t>(tag)) != 0)
+                {
+                    if (!result.empty())
+                        result += ", ";
 
-            result += tagToString(tag);
-        }
+                    result += tagToString(tag);
+                }
+            };
+
+        append(ActivityTags::Browser);
+        append(ActivityTags::Code);
+        append(ActivityTags::Study);
+        append(ActivityTags::Work);
+        append(ActivityTags::Game);
+        append(ActivityTags::Video);
+        append(ActivityTags::Music);
+        append(ActivityTags::Chat);
+        append(ActivityTags::Social);
+        append(ActivityTags::FileManager);
+        append(ActivityTags::Terminal);
+        append(ActivityTags::Trash);
 
         return result;
     }

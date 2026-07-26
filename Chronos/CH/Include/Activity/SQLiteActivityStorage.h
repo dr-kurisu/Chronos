@@ -28,14 +28,8 @@ namespace chronos {
 
 		// Query
 		std::optional<User> findUser(UserId id) override;
-		std::optional<User> findUserByName(std::string name);
-		std::vector<User> findAllUsers() override;
-		std::optional<Activity> findActivity(ActivityId id) override;
-		std::vector<Activity> findActivities(UserId userId);
-		std::vector<Activity> findActivities(
-			UserId userId,
-			Timestamp begin,
-			Timestamp end);
+		std::optional<User> findUserByName(std::string name) override;
+		std::vector<Activity> findActivities(UserId userId, Timestamp begin, Timestamp end) override;
 
 	protected:
 		SQLiteActivityStorage(const SQLiteActivityStorage&) = delete;

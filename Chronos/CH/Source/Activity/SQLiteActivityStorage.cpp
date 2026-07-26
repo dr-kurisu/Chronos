@@ -68,15 +68,10 @@ UserId SQLiteActivityStorage::createUser(const User& user)
             CreatedTime
         )
         VALUES
-        (
-            ?,
-            ?,
-            ?
-        );
+        (?, ?, ?);
     )";
     Statement stmt = prepare(sql);
-    if (!stmt)
-        return -1;
+    if (!stmt) return -1;
 
     sqlite3_bind_text(stmt.get(), 1, user.name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt.get(), 2, user.passwordHash.c_str(), -1, SQLITE_TRANSIENT);
@@ -89,7 +84,7 @@ UserId SQLiteActivityStorage::createUser(const User& user)
         sqlite3_last_insert_rowid(m_db));
 
     ChronosLogInfo(
-        "Created user. Id: {}, Name: {}",
+        "Created user successfully.   Id: {}, Name: {}",
         id,
         user.name);
     return id;
@@ -168,7 +163,47 @@ bool SQLiteActivityStorage::removeUser(UserId id)
 
 std::optional<User> SQLiteActivityStorage::findUser(UserId id)
 {
-    return std::optional<User>();
+    // check id
+    if (id < 0) {
+        ChronosLogWarning("Failed to findUser with invalid id");
+        return std::nullopt;
+    }
+    constexpr std::string_view sql = R"(
+        SELECT
+            Id,
+            Name, 
+            PasswordHash,
+            CreatedTime
+        FROM Users
+        WHERE Id = ?;
+    )";
+    Statement stmt = prepare(sql);
+    if (!stmt) return std::nullopt;
+    sqlite3_bind_int64(stmt.get(), 1, id);
+
+    const int result = sqlite3_step(stmt.get());
+    if (result == SQLITE_ROW)
+    {
+        User user;
+        user.id = static_cast<UserId>(
+            sqlite3_column_int64(stmt.get(), 0));
+        user.name = reinterpret_cast<const char*>(
+            sqlite3_column_text(stmt.get(), 1));
+        user.passwordHash = reinterpret_cast<const char*>(
+            sqlite3_column_text(stmt.get(), 2));
+        user.createdTime = static_cast<Timestamp>(
+            sqlite3_column_int64(stmt.get(), 3));
+        return user;
+    }
+
+    if (result != SQLITE_DONE)
+    {
+        ChronosLogError(
+            "Failed to find user: {}",
+            sqlite3_errmsg(m_db));
+    }
+
+    return std::nullopt;
 }
 
 std::optional<User> SQLiteActivityStorage::findUserByName(std::string name)
@@ -189,9 +224,7 @@ std::optional<User> SQLiteActivityStorage::findUserByName(std::string name)
 
     sqlite3_bind_text(stmt.get(), 1, name.c_str(), -1, SQLITE_TRANSIENT);
 
-
     const int result = sqlite3_step(stmt.get());
-
     if (result == SQLITE_ROW)
     {
         User user;
@@ -216,14 +249,43 @@ std::optional<User> SQLiteActivityStorage::findUserByName(std::string name)
     return std::nullopt;
 }
 
-std::vector<User> SQLiteActivityStorage::findAllUsers()
-{
-    return std::vector<User>();
-}
-
 ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
 {
-    return ActivityId();
+    // check activity
+    if (!activity.isValid()) 
+    {
+        ChronosLogWarning("Fail to insert invalid activity");
+        return -1;
+    }
+    constexpr std::string_view sql = R"(
+        INSERT INTO Activities
+        (
+            UserId,
+            StartTime,
+            EndTime,
+            ProcessName,
+            WindowTitle,
+            Tag
+        )
+        VALUES
+        (?, ?, ?, ?, ?, ?)
+    )";
+
+    Statement stmt = prepare(sql);
+    if (!stmt) return -1;
+    // Bind params
+    sqlite3_bind_int64(stmt.get(), 1, activity.userId);
+    sqlite3_bind_int64(stmt.get(), 2, activity.convertTimePoint(activity.startTime));
+    sqlite3_bind_int64(stmt.get(), 3, activity.convertTimePoint(activity.endTime));
+    sqlite3_bind_text(stmt.get(), 4, activity.window.processName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt.get(), 5, activity.window.title.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(stmt.get(), 6, static_cast<int64_t>(activity.tags));
+
+    if (!execute(stmt)) return -1;
+    UserId id = static_cast<UserId>(
+        sqlite3_last_insert_rowid(m_db));
+    ChronosLogInfo("Create Activity successfully.   Activity id: {}", id);
+    return id;
 }
 
 bool SQLiteActivityStorage::updateActivity(const Activity& activity)
@@ -236,12 +298,7 @@ bool SQLiteActivityStorage::removeActivity(ActivityId id)
     return false;
 }
 
-std::optional<Activity> SQLiteActivityStorage::findActivity(ActivityId id)
-{
-    return std::optional<Activity>();
-}
-
-std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId)
+std::vector<Activity> findActivities(UserId userId, Timestamp begin, Timestamp end) 
 {
     return std::vector<Activity>();
 }

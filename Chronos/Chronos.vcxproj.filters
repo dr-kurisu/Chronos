@@ -18,6 +18,7 @@
     <ClInclude Include="CH\Include\Activity\Statement.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3ext.h" />
+    <ClInclude Include="CH\Include\Activity\ActivityTag.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
