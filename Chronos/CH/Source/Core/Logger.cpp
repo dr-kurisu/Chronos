@@ -4,8 +4,8 @@
 
 chronos::Logger::Logger(LogLevel level) : m_level(level)
 {
-	std::clog << "[Chronos Logger]: Log level set to " << chronos::Logger::logLevelToString(level) << "\n";
-	std::clog << "-----------------------------------------------------------" << "\n";
+	//std::clog << "[Chronos Logger]: Log level set to " << chronos::Logger::logLevelToString(level) << "\n";
+	//std::clog << "-----------------------------------------------------------" << "\n";
 }
 
 chronos::Logger::~Logger()

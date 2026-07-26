@@ -46,12 +46,18 @@ void SQLiteActivityStorage::configureDatabase()
     execute("PRAGMA foreign_keys = ON;");
 }
 
-UserId chronos::SQLiteActivityStorage::createUser(const chronos::User& user)
+UserId SQLiteActivityStorage::createUser(const User& user)
 {
     std::optional<User> existUser = findUserByName(user.name);
-    if (existUser) {
+    if (existUser)
+    {
         ChronosLogWarning("Username: {} already exist", existUser->name);
         return existUser->id;
+    }
+    if (!user.isValid()) 
+    {
+        ChronosLogWarning("Invalid user.");
+        return -1;
     }
 
     constexpr std::string_view sql = R"(
@@ -89,8 +95,12 @@ UserId chronos::SQLiteActivityStorage::createUser(const chronos::User& user)
     return id;
 }
 
-void SQLiteActivityStorage::updateUser(const User& user)
+bool SQLiteActivityStorage::updateUser(const User& user)
 {
+    if (!user.isValid() || user.id < 0) {
+        ChronosLogWarning("Failed to update invalid user.");
+        return false;
+    }
     constexpr std::string_view sql = R"(
         UPDATE Users 
         SET
@@ -106,7 +116,7 @@ void SQLiteActivityStorage::updateUser(const User& user)
         ChronosLogError(
             "Failed to update user: {}",
             sqlite3_errmsg(m_db));
-        return;
+        return false;
     }
 
     sqlite3_bind_text(stmt.get(), 1, user.name.c_str(), - 1, SQLITE_TRANSIENT);
@@ -114,16 +124,22 @@ void SQLiteActivityStorage::updateUser(const User& user)
     sqlite3_bind_int64(stmt.get(), 3, user.id);
 
     if (!execute(stmt))
-        return;
+        return false;
     
     if (sqlite3_changes(m_db) == 0)
     {
         ChronosLogWarning("UserId: {} does not exist.", user.id);
+        return false;
     }
+    return true;
 }
 
-void SQLiteActivityStorage::removeUser(UserId id)
+bool SQLiteActivityStorage::removeUser(UserId id)
 {
+    if (id < 0) {
+        ChronosLogWarning("Failed to remove invalid userid.");
+        return false;
+    }
     constexpr std::string_view sql = R"(
         DELETE FROM Users
         WHERE Id = ?;
@@ -135,17 +151,19 @@ void SQLiteActivityStorage::removeUser(UserId id)
         ChronosLogError(
             "Failed to remove user: {}",
             sqlite3_errmsg(m_db));
-        return;
+        return false;
     }
 
     sqlite3_bind_int64(stmt.get(), 1, id);
     if (!execute(stmt))
-        return;
+        return false;
 
     if (sqlite3_changes(m_db) == 0)
     {
         ChronosLogWarning("UserId: {} does not exist.", id);
+        return false;
     }
+    return true;
 }
 
 std::optional<User> SQLiteActivityStorage::findUser(UserId id)
@@ -153,7 +171,7 @@ std::optional<User> SQLiteActivityStorage::findUser(UserId id)
     return std::optional<User>();
 }
 
-std::optional<User> chronos::SQLiteActivityStorage::findUserByName(std::string name)
+std::optional<User> SQLiteActivityStorage::findUserByName(std::string name)
 {
     constexpr std::string_view sql = R"(
         SELECT
@@ -198,44 +216,44 @@ std::optional<User> chronos::SQLiteActivityStorage::findUserByName(std::string n
     return std::nullopt;
 }
 
-std::vector<User> chronos::SQLiteActivityStorage::findAllUsers()
+std::vector<User> SQLiteActivityStorage::findAllUsers()
 {
     return std::vector<User>();
 }
 
-ActivityId chronos::SQLiteActivityStorage::insertActivity(const Activity& activity)
+ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
 {
     return ActivityId();
 }
 
-void chronos::SQLiteActivityStorage::updateActivity(const Activity& activity)
+bool SQLiteActivityStorage::updateActivity(const Activity& activity)
 {
-
+    return false;
 }
 
-void chronos::SQLiteActivityStorage::removeActivity(ActivityId id)
+bool SQLiteActivityStorage::removeActivity(ActivityId id)
 {
-
+    return false;
 }
 
-std::optional<Activity> chronos::SQLiteActivityStorage::findActivity(ActivityId id)
+std::optional<Activity> SQLiteActivityStorage::findActivity(ActivityId id)
 {
     return std::optional<Activity>();
 }
 
-std::vector<Activity> chronos::SQLiteActivityStorage::findActivities(UserId userId)
+std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId)
 {
     return std::vector<Activity>();
 }
 
-std::vector<Activity> chronos::SQLiteActivityStorage::findActivities(UserId userId, Timestamp begin, Timestamp end)
+std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Timestamp begin, Timestamp end)
 {
     return std::vector<Activity>();
 }
 
 
 
-bool chronos::SQLiteActivityStorage::createTables()
+bool SQLiteActivityStorage::createTables()
 {
     bool success = true;
     // Create Sser Table

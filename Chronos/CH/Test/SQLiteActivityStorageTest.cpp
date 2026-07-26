@@ -8,7 +8,7 @@ namespace chronos {
     protected:
         void SetUp() override
         {
-            m_logger = std::make_unique<Logger>(Logger::LogLevel::Info);
+            m_logger = std::make_unique<Logger>(Logger::LogLevel::Error);
             SQLiteACStorageDesc SQLiteDesc{
                 .base = *m_logger,
                 .storagePath = ":memory:"
@@ -20,14 +20,131 @@ namespace chronos {
     protected:
         std::unique_ptr<Logger> m_logger;
         std::unique_ptr<SQLiteActivityStorage> m_storage;
+    public:
+        Logger& getLogger() const noexcept
+        {
+            return *m_logger;
+        }
     };
 
     TEST_F(SQLiteActivityStorageTest, CreateUser)
     {
+        // Create valid user
         User user;
         user.name = "Alice";
         user.passwordHash = "123";
         UserId id = m_storage->createUser(user);
         EXPECT_GT(id, 0);
     }
+
+    TEST_F(SQLiteActivityStorageTest, CreateInvalidUser)
+    {
+        // Create invalid user with empty passwordHash
+        User user{};
+        user.name = "Invalid";
+        user.passwordHash = "";
+        UserId id = m_storage->createUser(user);
+        EXPECT_EQ(id, -1);
+
+        // Create invlaid user without name
+        User user2{};
+        user2.passwordHash = "123";
+        UserId id2 = m_storage->createUser(user2);
+        EXPECT_EQ(id2, -1);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, FindUserByName)
+    {
+        // Find valid user
+        User user;
+        user.name = "Alice";
+        user.passwordHash = "123";
+        UserId id = m_storage->createUser(user);
+
+        auto result = m_storage->findUserByName("Alice");
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(result->id, id);
+        EXPECT_EQ(result->name, user.name);
+        EXPECT_EQ(result->passwordHash, user.passwordHash);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, FindInvalidUserByName) 
+    {
+        // Find non-exist user
+        auto result = m_storage->findUserByName("Alice");
+        ASSERT_FALSE(result.has_value());
+    }
+
+    TEST_F(SQLiteActivityStorageTest, RemoveUser)
+    {
+        // Remove valid user
+        User user;
+        user.name = "Alice";
+        user.passwordHash = "123";
+        UserId id = m_storage->createUser(user);
+        auto result = m_storage->removeUser(id);
+        ASSERT_TRUE(result);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, RemoveInvalidUser)
+    {
+        // Remove user without id
+        auto result = m_storage->removeUser(-1);
+        ASSERT_FALSE(result);
+        // Remove user with non-exist id
+        auto result2 = m_storage->removeUser(1);
+        ASSERT_FALSE(result2);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, UpdateUser)
+    {
+        // Update Valid User
+        User user;
+        user.name = "Alise";
+        user.passwordHash = "123";
+        UserId id = m_storage->createUser(user);
+
+        User updatedUser;
+        updatedUser.id = id;
+        updatedUser.name = "Alice";
+        updatedUser.passwordHash = "345";
+
+        auto result = m_storage->updateUser(updatedUser);
+        auto newUser = m_storage->findUserByName("Alice");
+        ASSERT_TRUE(result);
+        EXPECT_EQ(newUser->id, id);
+        EXPECT_EQ(newUser->name, updatedUser.name);
+        EXPECT_EQ(newUser->passwordHash, updatedUser.passwordHash);
+    }
+
+    TEST_F(SQLiteActivityStorageTest, UpdateInvalidUser)
+    {
+        User user1;
+        user1.name = "Alise";
+        user1.passwordHash = "123";
+        UserId id = m_storage->createUser(user1);
+        // Update User without id
+        User user2;
+        user2.name = "Alice";
+        user2.passwordHash = "345";
+        auto result1 = m_storage->updateUser(user2);
+        ASSERT_FALSE(result1);
+
+        // Update User with insufficient info
+        User user3;
+        user3.id = id;
+        user3.name = "Alice";
+        auto result2 = m_storage->updateUser(user3);
+        ASSERT_FALSE(result2);
+
+        // Update Non-exist user
+        User user4;
+        user4.id = 100;
+        user4.name = "Alice";
+        user4.passwordHash = "123";
+        auto result3 = m_storage->updateUser(user4);
+        ASSERT_FALSE(result3);
+    }
+
+
 }

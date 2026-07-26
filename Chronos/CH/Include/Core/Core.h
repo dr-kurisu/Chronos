@@ -28,10 +28,15 @@ namespace chronos {
 
 	struct User
 	{
-		UserId id{};
+		UserId id{-1};
 		std::string name;
 		std::string passwordHash;
 		Timestamp createdTime{};
+
+		bool isValid() const 
+		{
+			return !name.empty() && !passwordHash.empty();
+		}
 	};
 
 	template <typename T> using UniquePtr = std::unique_ptr<T>;

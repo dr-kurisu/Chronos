@@ -18,13 +18,13 @@ namespace chronos {
 
 		// User
 		UserId createUser(const User& user) override;
-		void updateUser(const User& user) override;
-		void removeUser(UserId id) override;
+		bool updateUser(const User& user) override;
+		bool removeUser(UserId id) override;
 
 		// Activity
 		ActivityId insertActivity(const Activity& activity) override;
-		void updateActivity(const Activity& activity) override;
-		void removeActivity(ActivityId id) override;
+		bool updateActivity(const Activity& activity) override;
+		bool removeActivity(ActivityId id) override;
 
 		// Query
 		std::optional<User> findUser(UserId id) override;

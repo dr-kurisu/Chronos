@@ -19,6 +19,7 @@ namespace chronos {
 		// void log(LogLevel level, const char* msg);
 		template<typename... Args>
 		void log(LogLevel level, std::format_string<Args...> fmt, Args&&... args) {
+			if (level > m_level) return;
 			auto str = std::format(fmt, std::forward<Args>(args)...);
 			_log(level, str.c_str());
 		}

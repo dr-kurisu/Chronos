@@ -11,13 +11,13 @@ namespace chronos {
 
         // User
         virtual UserId createUser(const User&) = 0;
-        virtual void updateUser(const User&) = 0;
-        virtual void removeUser(UserId) = 0;
+        virtual bool updateUser(const User&) = 0;
+        virtual bool removeUser(UserId) = 0;
 
         // Activity
         virtual ActivityId insertActivity(const Activity&) = 0;
-        virtual void updateActivity(const Activity&) = 0;
-        virtual void removeActivity(ActivityId) = 0;
+        virtual bool updateActivity(const Activity&) = 0;
+        virtual bool removeActivity(ActivityId) = 0;
 
         // Query
         virtual std::optional<User> findUser(UserId) = 0;
