@@ -1,5 +1,8 @@
 #include <Activity/SQLiteActivityStorage.h>
 #include <Activity/Statement.h>
+#include <Activity/Activity.h>
+#include <Activity/ActivityTag.h>
+#include <User/User.h>
 #include <sqlite3.h>
 #include <assert.h>
 
@@ -52,11 +55,11 @@ UserId SQLiteActivityStorage::createUser(const User& user)
     if (existUser)
     {
         ChronosLogWarning("Username: {} already exist", existUser->name);
-        return existUser->id;
+        return -1;
     }
     if (!user.isValid()) 
     {
-        ChronosLogWarning("Invalid user.");
+        ChronosLogWarning("Failed to createUser with Invalid user.");
         return -1;
     }
 
@@ -92,7 +95,8 @@ UserId SQLiteActivityStorage::createUser(const User& user)
 
 bool SQLiteActivityStorage::updateUser(const User& user)
 {
-    if (!user.isValid() || user.id < 0) {
+    if (!user.isValid() || user.id < 0) 
+    {
         ChronosLogWarning("Failed to update invalid user.");
         return false;
     }
@@ -118,14 +122,14 @@ bool SQLiteActivityStorage::updateUser(const User& user)
     sqlite3_bind_text(stmt.get(), 2, user.passwordHash.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int64(stmt.get(), 3, user.id);
 
-    if (!execute(stmt))
-        return false;
+    if (!execute(stmt)) return false;
     
     if (sqlite3_changes(m_db) == 0)
     {
         ChronosLogWarning("UserId: {} does not exist.", user.id);
         return false;
     }
+    ChronosLogInfo("Successfully update user with Id: {}, Name: {}", user.id, user.name);
     return true;
 }
 
@@ -268,7 +272,7 @@ ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
             Tag
         )
         VALUES
-        (?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?);
     )";
 
     Statement stmt = prepare(sql);
@@ -290,25 +294,132 @@ ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
 
 bool SQLiteActivityStorage::updateActivity(const Activity& activity)
 {
-    return false;
+    // Check activity
+    if (!activity.isValid() || activity.id < 0) 
+    {
+        ChronosLogWarning("Failed to update invalid activity");
+        return false;
+    }
+    constexpr std::string_view sql = R"(
+        UPDATE Avtivities
+        SET
+            UserId = ?,
+            StartTime = ?,
+            EndTime = ?,
+            ProcessName = ?,
+            WindowTitle = ?,
+            Tag = ?
+        WHERE
+            Id = ?;
+    )";
+    Statement stmt = prepare(sql);
+    if (!stmt)
+    {
+        ChronosLogError(
+            "Failed to update activity: {}",
+            sqlite3_errmsg(m_db));
+        return false;
+    }
+    sqlite3_bind_int64(stmt.get(), 1, activity.userId);
+    sqlite3_bind_int64(stmt.get(), 2, activity.convertTimePoint(activity.startTime));
+    sqlite3_bind_int64(stmt.get(), 3, activity.convertTimePoint(activity.endTime));
+    sqlite3_bind_text(stmt.get(), 4, activity.window.processName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt.get(), 5, activity.window.title.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(stmt.get(), 6, static_cast<int64_t>(activity.tags));
+    sqlite3_bind_int64(stmt.get(), 7, activity.id);
+
+    if (!execute(stmt)) return false;
+    if (sqlite3_changes(m_db) == 0) 
+    {
+        ChronosLogWarning("ActivityId: {} does not exist.", activity.id);
+        return false;
+    }
+    ChronosLogInfo("Successfully update activity with Id: {}, title: {}", activity.id, activity.window.title);
+    return true;
 }
 
 bool SQLiteActivityStorage::removeActivity(ActivityId id)
 {
-    return false;
-}
-
-std::vector<Activity> findActivities(UserId userId, Timestamp begin, Timestamp end) 
-{
-    return std::vector<Activity>();
+    // Check id
+    if (id < 0) {
+        ChronosLogWarning("Failed to remove activity with invalid id");
+        return false;
+    }
+    // Prepare stmt
+    constexpr std::string_view sql = R"(
+        DELETE FROM Activities
+        WHERE id = ?;
+    )";
+    Statement stmt = prepare(sql);
+    if (!stmt) return false;
+    // Bind params
+    sqlite3_bind_int64(stmt.get(), 1, id);
+    if (!execute(stmt)) return false;
+    if (sqlite3_changes(m_db) == 0) 
+    {
+        ChronosLogWarning("ActivityId: {} does not exist.", id);
+        return false;
+    }
+    return true;
 }
 
 std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Timestamp begin, Timestamp end)
-{
-    return std::vector<Activity>();
+{   
+    std::vector<Activity> activities;
+    // Check params
+    if (userId < 0)
+    {
+        ChronosLogWarning("Failed to findActivity with invalid userId");
+        return activities;
+    }
+    if (end < begin) 
+    {
+        ChronosLogWarning("Failed to findActivity with invalid timestamp");
+        return activities;
+    }
+
+    constexpr std::string_view sql = R"(
+        SELECT * FROM Activities
+        WHERE UserId = ?
+              AND StartTime < ?
+              AND EndTime > ?
+        ORDER BY StartTime ASC;
+    )";
+    Statement stmt = prepare(sql);
+    if (!stmt) return activities;
+    // bind
+    sqlite3_bind_int64(stmt.get(), 1, userId);
+    sqlite3_bind_int64(stmt.get(), 2, end);
+    sqlite3_bind_int64(stmt.get(), 3, begin);
+    // step
+    const int result = sqlite3_step(stmt.get());
+    while (sqlite3_step(stmt.get()) == SQLITE_ROW)
+    {
+        Activity activity;
+
+        activity.id = sqlite3_column_int64(stmt.get(), 0);
+        activity.userId = sqlite3_column_int64(stmt.get(), 1);
+
+        activity.window.processName =
+            reinterpret_cast<const char*>(
+                sqlite3_column_text(stmt.get(), 2)
+                );
+
+        activity.window.title =
+            reinterpret_cast<const char*>(
+                sqlite3_column_text(stmt.get(), 3)
+                );
+
+        activity.startTime = Activity::convertTimestamp(sqlite3_column_int64(stmt.get(), 4));
+           
+        activity.endTime = Activity::convertTimestamp(sqlite3_column_int64(stmt.get(), 5));
+
+        activity.tags = static_cast<ActivityTags>(sqlite3_column_int(stmt.get(), 6));
+
+        activities.push_back(std::move(activity));
+    }
+    return activities;
 }
-
-
 
 bool SQLiteActivityStorage::createTables()
 {

@@ -1,19 +1,25 @@
 #include <Application/Application.h>
 #include <Monitor/Monitor.h>
 #include <Activity/ActivityManager.h>
+#include <User/UserManager.h>
 #include <Activity/Activity.h>
+#include <Activity/SQLiteActivityStorage.h>
 #include <Core/Logger.h>
 
 chronos::Application::Application(const ApplicationDesc& desc)
 {
 	m_logger = std::make_unique<Logger>(desc.level);
+	m_storage = std::make_shared<SQLiteActivityStorage>(SQLiteACStorageDesc{ *m_logger, desc.storagePath });
+
+	ChronosLogInfo("Creating UserManager...");
+	m_userManager = std::make_unique<UserManager>(UserManagerDesc{*m_logger, *m_storage});
 
 	ChronosLogInfo("Creating ActivityManager...");
 	m_acManager = std::make_unique<ActivityManager>(
 		ActivityManagerDesc{
 			.base = *m_logger,
 			.minDuration = std::chrono::seconds{2},
-			.storagePath = "CH/Data/chronos.db"
+			.storage = *m_storage
 		}
 	);
 
@@ -25,9 +31,12 @@ chronos::Application::Application(const ApplicationDesc& desc)
 			m_acManager->onWindowChanged(info);
 		}
 	);
-	
+	// Login default account
+	login();
+	// Get current AC
 	m_acManager->createCurrentActivity(m_monitor->getCurrentForeground());
 	ChronosLogInfo("Chronos Lanuched");
+	ChronosLogInfo("------------------------------------------");
 }
 
 chronos::Application::~Application()
@@ -40,3 +49,14 @@ chronos::Logger& chronos::Application::getLogger() noexcept
 	return *m_logger;
 }
 
+void chronos::Application::login()
+{
+	auto result = m_userManager->login("TestUser", "TestPassword");
+	if (!result) 
+	{
+		ChronosLogWarning("Failed to login test account");
+		return;
+	}
+	m_acManager->setCurrentUserId(m_userManager->getCurrentUserId());
+	ChronosLogInfo("Successfully login to test account");
+}

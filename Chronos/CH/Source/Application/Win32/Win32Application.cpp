@@ -11,6 +11,5 @@ void chronos::Application::run() {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-
     }
 }

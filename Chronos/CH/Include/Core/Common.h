@@ -11,6 +11,7 @@ namespace chronos {
 
 	struct ApplicationDesc {
 		Logger::LogLevel level;
+		std::filesystem::path storagePath = "";
 	};
 
 	struct WindowsWatcherDesc {
@@ -33,11 +34,16 @@ namespace chronos {
 		bool captureProcessPath = true;
 		std::chrono::seconds minDuration{ 10 };
 		size_t maxEventCacheSize = 128;
-		std::filesystem::path storagePath = "";
+		IActivityStorage& storage;
 	};
 
 	struct SQLiteACStorageDesc {
 		BaseDesc base;
 		std::filesystem::path storagePath = "";
+	};
+
+	struct UserManagerDesc {
+		BaseDesc base;
+		IActivityStorage& storage;
 	};
 };

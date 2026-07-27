@@ -1,6 +1,6 @@
 #include <Monitor/Windows/WindowsWatcher.h>
 #include <Activity/Activity.h>
-#include <Core/Encoding.h>
+#include <Core/StringEncoding.h>
 #include <filesystem>
 #include <iostream>
 

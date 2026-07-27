@@ -26,7 +26,7 @@ namespace chronos {
         std::unique_ptr<Logger> m_logger;
         std::unique_ptr<SQLiteActivityStorage> m_storage;
 
-        int testUserId;
+        UserId testUserId;
         WindowInfo exampleWindow{
             .hwnd = reinterpret_cast<HWND>(0x00123456),
             .pid = 12345,
@@ -205,7 +205,22 @@ namespace chronos {
         // To be continued ...
     }
 
-    TEST_F(SQLiteActivityStorageTest, 1)
+    TEST_F(SQLiteActivityStorageTest, UpdateValidActivity)
+    {
+
+    }
+
+    TEST_F(SQLiteActivityStorageTest, UpdateInValidActivity)
+    {
+
+    }
+
+    TEST_F(SQLiteActivityStorageTest, findActivitiesValidActivities)
+    {
+
+    }
+
+    TEST_F(SQLiteActivityStorageTest, findActivitiesInvalidActivities)
     {
 
     }

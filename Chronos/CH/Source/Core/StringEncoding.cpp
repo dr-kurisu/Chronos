@@ -1,5 +1,4 @@
-#include <Core/Encoding.h>
-
+#include <Core/StringEncoding.h>
 #include <Windows.h>
 
 namespace chronos

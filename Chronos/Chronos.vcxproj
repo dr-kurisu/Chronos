@@ -42,9 +42,19 @@
     <ClInclude Include="CH\Include\Core\Logger.h" />
     <ClInclude Include="CH\Include\Monitor\Windows\WindowsWatcher.h" />
     <ClInclude Include="CH\Include\Monitor\Monitor.h" />
-    <ClInclude Include="CH\Include\Core\Encoding.h" />
+    <ClInclude Include="CH\Include\Core\StringEncoding.h" />
+    <ClInclude Include="CH\Include\User\User.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\include\argon2.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2-impl.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blamka-round-opt.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blamka-round-ref.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\core.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\encoding.h" />
+    <ClInclude Include="CH\ThirdParty\argon2\src\thread.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3ext.h" />
+    <ClInclude Include="CH\Include\User\UserManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\TestMain.cpp">
@@ -64,13 +74,21 @@
     <ClCompile Include="CH\Source\Application\Application.cpp" />
     <ClCompile Include="CH\Source\Application\Win32\Win32Application.cpp" />
     <ClCompile Include="CH\Source\Core\Base.cpp" />
-    <ClCompile Include="CH\Source\Core\Encoding.cpp" />
+    <ClCompile Include="CH\Source\Core\StringEncoding.cpp" />
     <ClCompile Include="CH\Source\Core\Logger.cpp" />
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
     <ClCompile Include="CH\Source\Monitor\Monitor.cpp" />
+    <ClCompile Include="CH\Test\UserManagerTest.cpp" />
+    <ClCompile Include="CH\ThirdParty\argon2\src\argon2.c" />
+    <ClCompile Include="CH\ThirdParty\argon2\src\blake2\blake2b.c" />
+    <ClCompile Include="CH\ThirdParty\argon2\src\core.c" />
+    <ClCompile Include="CH\ThirdParty\argon2\src\encoding.c" />
+    <ClCompile Include="CH\ThirdParty\argon2\src\opt.c" />
+    <ClCompile Include="CH\ThirdParty\argon2\src\thread.c" />
     <ClCompile Include="CH\ThirdParty\googletest\src\gtest-all.cc" />
     <ClCompile Include="CH\ThirdParty\sqlite3.c" />
     <ClCompile Include="CH\Test\SQLiteActivityStorageTest.cpp" />
+    <ClCompile Include="CH\Source\User\UserManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -131,14 +149,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>CH/Include;CH/Source;CH/ThirdParty;CH/ThirdParty/googletest;CH/ThirdParty/googletest/include;$(IncludePath)</IncludePath>
+    <IncludePath>CH/Include;CH/Source;CH/ThirdParty;CH/ThirdParty/googletest;CH/ThirdParty/googletest/include;CH/ThirdParty/argon2;CH/ThirdParty/argon2/include;$(IncludePath)</IncludePath>
     <OutDir>Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Test|x64'">
     <OutDir>Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>CH/Include;CH/Source;CH/ThirdParty;CH/ThirdParty/googletest;CH/ThirdParty/googletest/include;$(IncludePath)</IncludePath>
+    <IncludePath>CH/Include;CH/Source;CH/ThirdParty;CH/ThirdParty/googletest;CH/ThirdParty/googletest/include;CH/ThirdParty/argon2;CH/ThirdParty/argon2/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

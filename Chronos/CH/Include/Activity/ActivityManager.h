@@ -15,12 +15,13 @@ namespace chronos {
 		void printCurrentActivity();
 		void classifyCurrentActivity();
 		void onWindowChanged(const WindowInfo& info);
+		void setCurrentUserId(UserId userId) noexcept;
 		void clear();
 	private:
 		std::vector<Activity> m_activities{};
 		UniquePtr<ActivityClassifier> m_classifier{};
-		UniquePtr<IActivityStorage> m_storage{};
-
+		IActivityStorage& m_storage;
+		UserId m_currentUserId{-1};
 		std::chrono::seconds minDuration{ 10 };
 	};
 }

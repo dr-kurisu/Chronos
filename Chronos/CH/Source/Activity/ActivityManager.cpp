@@ -4,15 +4,9 @@
 #include <Activity/ActivityClassifier.h>
 #include <Activity/SQLiteActivityStorage.h>
 
-chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): Base(desc.base), minDuration(desc.minDuration)
+chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): Base(desc.base), minDuration(desc.minDuration), m_storage(desc.storage)
 {
     m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base });
-    m_storage = std::make_unique<SQLiteActivityStorage>(SQLiteACStorageDesc{ desc.base, desc.storagePath });
-
-    User user;
-    user.name = "TestUser";
-    user.passwordHash = "test_hash";
-    m_storage->createUser(user);
 }
 
 chronos::ActivityManager::~ActivityManager()
@@ -22,6 +16,7 @@ chronos::ActivityManager::~ActivityManager()
 void chronos::ActivityManager::createCurrentActivity(const WindowInfo& info)
 {
 	Activity ac{info};
+    ac.userId = m_currentUserId;
 	m_activities.push_back(ac);
 }
 
@@ -48,12 +43,14 @@ void chronos::ActivityManager::printCurrentActivity()
     if (!ac) return;
     ChronosLogInfo(
         "Activity:\n"
+        "UserId: {}\n"
         "PID: {}\n"
         "Title: {}\n"
         "Process: {}\n"
         "Tags: {}\n"
         "Start: {}\n"
         "End: {}\n\n",
+        ac->userId,
         ac->window.pid,
         ac->window.title,
         ac->window.processName,
@@ -96,6 +93,16 @@ void chronos::ActivityManager::onWindowChanged(const WindowInfo& info)
 
     printCurrentActivity();
     createCurrentActivity(info);
+}
+
+void chronos::ActivityManager::setCurrentUserId(UserId userId) noexcept
+{
+    if (userId < 0) 
+    {
+        ChronosLogWarning("Failed to set current userId.");
+        return;
+    }
+    m_currentUserId = userId;
 }
 
 

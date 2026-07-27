@@ -7,7 +7,7 @@ int main() {
 	SetConsoleCP(CP_UTF8);
 
 	try{
-		chronos::Application application({ chronos::Logger::LogLevel::Info });
+		chronos::Application application({ chronos::Logger::LogLevel::Info, "CH/Data/chronos.db"});
 		application.run();
 		return 0;
 	}

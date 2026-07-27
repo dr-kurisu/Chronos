@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <cstdint>
+#include <array>
 
 #define disable_copy_and_move(Class)	\
 protected:	\
@@ -11,9 +12,7 @@ protected:	\
 	Class(Class&&) = delete; \
 
 namespace chronos {
-	using UserId = std::int64_t;
 	using ActivityId = std::int64_t;
-	using Timestamp = std::int64_t;
 
 	class Logger;
 	class WindowsWatcher;
@@ -21,23 +20,11 @@ namespace chronos {
 	class ActivityManager;
 	class ActivityClassifier;
 	class Statement;
+	class IActivityStorage;
+	class UserManager;
 
 	struct Activity;
 	struct WindowInfo;
-
-
-	struct User
-	{
-		UserId id{-1};
-		std::string name;
-		std::string passwordHash;
-		Timestamp createdTime{};
-
-		bool isValid() const 
-		{
-			return !name.empty() && !passwordHash.empty();
-		}
-	};
 
 	template <typename T> using UniquePtr = std::unique_ptr<T>;
 	template <typename T> using RefPtr = std::shared_ptr<T>;
