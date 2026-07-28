@@ -18,6 +18,8 @@ namespace chronos {
 		UniquePtr<Monitor> m_monitor{};
 		UniquePtr<ActivityManager> m_acManager{};
 		UniquePtr<UserManager> m_userManager{};
+		UniquePtr<ActivitySummary> m_acSummary{};
+		UniquePtr<ISummaryGenerator> m_summaryGenerator{};
 		RefPtr<IActivityStorage> m_storage;
 
 		bool m_isRunning = true;

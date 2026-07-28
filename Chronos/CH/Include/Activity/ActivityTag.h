@@ -19,6 +19,22 @@ namespace chronos {
         Trash = 1u << 11
     };
 
+    constexpr std::array<ActivityTags, 12> AllActivityTags =
+    {
+        ActivityTags::Browser,
+        ActivityTags::Code,
+        ActivityTags::Study,
+        ActivityTags::Work,
+        ActivityTags::Game,
+        ActivityTags::Video,
+        ActivityTags::Music,
+        ActivityTags::Chat,
+        ActivityTags::Social,
+        ActivityTags::FileManager,
+        ActivityTags::Terminal,
+        ActivityTags::Trash
+    };
+
     constexpr ActivityTags operator|(ActivityTags lhs, ActivityTags rhs)
     {
         return static_cast<ActivityTags>(

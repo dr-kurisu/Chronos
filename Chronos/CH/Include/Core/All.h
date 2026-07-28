@@ -1,0 +1,10 @@
+#pragma once
+#include <Application/Application.h>
+#include <Monitor/Monitor.h>
+#include <Activity/ActivityManager.h>
+#include <User/UserManager.h>
+#include <Activity/Activity.h>
+#include <Analytics/RuleBasedSummaryGenerator.h>
+#include <Analytics/ActivitySummary.h>
+#include <Activity/SQLiteActivityStorage.h>
+#include <Core/Logger.h>

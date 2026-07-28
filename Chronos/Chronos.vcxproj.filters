@@ -29,6 +29,11 @@
     <ClInclude Include="CH\ThirdParty\argon2\src\thread.h" />
     <ClInclude Include="CH\ThirdParty\argon2\src\encoding.h" />
     <ClInclude Include="CH\ThirdParty\argon2\include\argon2.h" />
+    <ClInclude Include="CH\Include\Analytics\ActivitySummary.h" />
+    <ClInclude Include="CH\Include\Analytics\ISummaryGenerator.h" />
+    <ClInclude Include="CH\Include\Analytics\Summary.h" />
+    <ClInclude Include="CH\Include\Analytics\RuleBasedSummaryGenerator.h" />
+    <ClInclude Include="CH\Include\Core\All.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
@@ -55,5 +60,6 @@
     <ClCompile Include="CH\ThirdParty\argon2\src\opt.c" />
     <ClCompile Include="CH\ThirdParty\argon2\src\thread.c" />
     <ClCompile Include="CH\ThirdParty\argon2\src\encoding.c" />
+    <ClCompile Include="CH\Source\Analytics\ActivitySummary.cpp" />
   </ItemGroup>
 </Project>

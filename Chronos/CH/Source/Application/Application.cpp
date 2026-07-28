@@ -1,10 +1,4 @@
-#include <Application/Application.h>
-#include <Monitor/Monitor.h>
-#include <Activity/ActivityManager.h>
-#include <User/UserManager.h>
-#include <Activity/Activity.h>
-#include <Activity/SQLiteActivityStorage.h>
-#include <Core/Logger.h>
+#include <Core/All.h>
 
 chronos::Application::Application(const ApplicationDesc& desc)
 {
@@ -31,6 +25,11 @@ chronos::Application::Application(const ApplicationDesc& desc)
 			m_acManager->onWindowChanged(info);
 		}
 	);
+
+	ChronosLogInfo("Creating AC Summary...");
+	m_summaryGenerator = std::make_unique<RuleBasedSummaryGenerator>();
+	m_acSummary = std::make_unique<ActivitySummary>(ActivitySummaryDesc{ *m_logger, *m_summaryGenerator });
+
 	// Login default account
 	login();
 	// Get current AC

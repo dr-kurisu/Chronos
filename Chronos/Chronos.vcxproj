@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CH\Include\Analytics\ActivitySummary.h" />
     <ClInclude Include="CH\Include\Activity\ActivityClassifier.h" />
     <ClInclude Include="CH\Include\Activity\ActivityTag.h" />
     <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
@@ -35,7 +36,11 @@
     <ClInclude Include="CH\Include\Activity\ActivityManager.h" />
     <ClInclude Include="CH\Include\Activity\IActivityStorage.h" />
     <ClInclude Include="CH\Include\Activity\Statement.h" />
+    <ClInclude Include="CH\Include\Analytics\ISummaryGenerator.h" />
+    <ClInclude Include="CH\Include\Analytics\RuleBasedSummaryGenerator.h" />
+    <ClInclude Include="CH\Include\Analytics\Summary.h" />
     <ClInclude Include="CH\Include\Application\Application.h" />
+    <ClInclude Include="CH\Include\Core\All.h" />
     <ClInclude Include="CH\Include\Core\Base.h" />
     <ClInclude Include="CH\Include\Core\Common.h" />
     <ClInclude Include="CH\Include\Core\Core.h" />
@@ -57,6 +62,7 @@
     <ClInclude Include="CH\Include\User\UserManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CH\Source\Analytics\ActivitySummary.cpp" />
     <ClCompile Include="App\TestMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Test|x64'">false</ExcludedFromBuild>

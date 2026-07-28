@@ -46,4 +46,9 @@ namespace chronos {
 		BaseDesc base;
 		IActivityStorage& storage;
 	};
+
+	struct ActivitySummaryDesc {
+		BaseDesc base;
+		ISummaryGenerator& generator;
+	};
 };

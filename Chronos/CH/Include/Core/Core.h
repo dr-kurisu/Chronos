@@ -21,7 +21,9 @@ namespace chronos {
 	class ActivityClassifier;
 	class Statement;
 	class IActivityStorage;
+	class ISummaryGenerator;
 	class UserManager;
+	class ActivitySummary;
 
 	struct Activity;
 	struct WindowInfo;
