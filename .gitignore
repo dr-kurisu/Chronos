@@ -3,3 +3,10 @@
 Chronos/Bin/
 Chronos/Intermediate/
 Chronos/CH/ThirdParty/
+Chronos/CH/UI/node_modules/
+Chronos/CH/UI/dist/
+Chronos/CH/UI/build/
+Chronos/CH/UI/coverage/
+
+*.log
+.env
