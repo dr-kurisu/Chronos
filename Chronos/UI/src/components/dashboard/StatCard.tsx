@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Card from "../common/card";
+import Card from "../common/Card";
 
 interface StatCardProps {
     title: string;

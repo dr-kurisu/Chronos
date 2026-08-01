@@ -1,0 +1,31 @@
+export enum ActivityTag {
+    None = 0,
+    Browser,
+    Code,
+    Study,
+    Work,
+    Game,
+    Video,
+    Music,
+    Chat,
+    Social,
+    FileManager,
+    Terminal,
+    Trash,
+}
+
+export const tagNames: Record<ActivityTag, string> = {
+    [ActivityTag.None]: "None",
+    [ActivityTag.Browser]: "Browser",
+    [ActivityTag.Code]: "Code",
+    [ActivityTag.Study]: "Study",
+    [ActivityTag.Work]: "Work",
+    [ActivityTag.Game]: "Game",
+    [ActivityTag.Video]: "Video",
+    [ActivityTag.Music]: "Music",
+    [ActivityTag.Chat]: "Chat",
+    [ActivityTag.Social]: "Social",
+    [ActivityTag.FileManager]: "File Manager",
+    [ActivityTag.Terminal]: "Terminal",
+    [ActivityTag.Trash]: "Trash",
+};

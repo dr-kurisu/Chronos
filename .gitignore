@@ -10,3 +10,4 @@ Chronos/CH/UI/coverage/
 
 *.log
 .env
+node_modules
