@@ -1,8 +1,25 @@
+import { Plan } from "../../../types/PlanTypes";
+import PlanCard from "./PlanCard";
 
-
-export default function PlanList() 
+interface Props
 {
-    return(
-        <></>
-    );    
+    plans: Plan[];
+}
+
+export default function PlanList({
+    plans
+}:Props)
+{
+    return (
+        <div>
+            {
+                plans.map(plan=>(
+                    <PlanCard
+                        key={plan.id}
+                        plan={plan}
+                    />
+                ))
+            }
+        </div>
+    );
 }

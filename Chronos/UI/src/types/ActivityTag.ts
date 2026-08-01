@@ -29,3 +29,19 @@ export const tagNames: Record<ActivityTag, string> = {
     [ActivityTag.Terminal]: "Terminal",
     [ActivityTag.Trash]: "Trash",
 };
+
+export const tagColours: Record<ActivityTag, string> = {
+    [ActivityTag.None]: "bg-gray-100 text-gray-600",
+    [ActivityTag.Browser]: "bg-blue-100 text-blue-700",
+    [ActivityTag.Code]: "bg-green-100 text-green-700",
+    [ActivityTag.Study]: "bg-purple-100 text-purple-700",
+    [ActivityTag.Work]: "bg-indigo-100 text-indigo-700",
+    [ActivityTag.Game]: "bg-red-100 text-red-700",
+    [ActivityTag.Video]: "bg-pink-100 text-pink-700",
+    [ActivityTag.Music]: "bg-yellow-100 text-yellow-700",
+    [ActivityTag.Chat]: "bg-cyan-100 text-cyan-700",
+    [ActivityTag.Social]: "bg-orange-100 text-orange-700",
+    [ActivityTag.FileManager]: "bg-slate-100 text-slate-700",
+    [ActivityTag.Terminal]: "bg-zinc-100 text-zinc-700",
+    [ActivityTag.Trash]: "bg-gray-200 text-gray-700",
+};

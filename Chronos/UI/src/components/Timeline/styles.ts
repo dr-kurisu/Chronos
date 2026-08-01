@@ -1,12 +1,13 @@
 export const TimelineStyles = {
     block: `
         absolute
-        left-3
-        right-3
+        left-1
+        right-1
+        flex
+        flex-col
+        justify-center
+        px-3
         rounded-lg
-        p-3
-        text-sm
-        shadow-sm
         overflow-hidden
     `,
 
@@ -99,6 +100,32 @@ export const TimelineStyles = {
     headerDividerCell: `
         px-4
         border-l
+    `,
+
+        blockHeader: `
+        flex
+        items-center
+        gap-2
+    `,
+
+
+    tags: `
+        flex
+        items-center
+        gap-1
+        mt-1
+        overflow-hidden
+        whitespace-nowrap
+    `,
+
+
+    tag: `
+        flex-shrink-0
+        text-xs
+        px-2
+        py-0.5
+        rounded-full
+        bg-white/60
     `,
 
 

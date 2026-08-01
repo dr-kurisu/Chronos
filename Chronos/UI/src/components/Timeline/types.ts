@@ -12,6 +12,6 @@ export interface TimelineItem
     title: string;
     start: string;
     end: string;
-    tag: ActivityTag;
+    tags: ActivityTag[];
     type: TimelineItemType;
 }

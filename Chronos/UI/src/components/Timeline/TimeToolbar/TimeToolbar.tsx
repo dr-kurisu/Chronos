@@ -1,32 +1,33 @@
 import { ChevronLeft, ChevronRight, CalendarDays, Filter } from "lucide-react";
 import { toolbarStyles } from "./styles";
 
-interface Props {
+interface Props 
+{
     date: Date;
     onDateChange: (date: Date) => void;
     onFilterChange: () => void;
 }
 
-export default function TimeToolbar({
-    date,
-    onDateChange,
-    onFilterChange
-}: Props) {
-    const previousDay = () => {
+export default function TimeToolbar({date, onDateChange, onFilterChange}: Props) 
+{
+    const previousDay = () => 
+    {
         const d = new Date(date);
         d.setDate(d.getDate() - 1);
         onDateChange(d);
     };
 
 
-    const nextDay = () => {
+    const nextDay = () => 
+    {
         const d = new Date(date);
         d.setDate(d.getDate() + 1);
         onDateChange(d);
     };
 
 
-    const today = () => {
+    const today = () => 
+    {
         onDateChange(new Date());
     };
 
@@ -42,7 +43,6 @@ export default function TimeToolbar({
 
                 <button className={toolbarStyles.dateButton}>
                     <CalendarDays className="w-5 h-5" />
-
                     {date.toLocaleDateString(
                         "en-US",
                         {
@@ -52,13 +52,11 @@ export default function TimeToolbar({
                             weekday: "short"
                         }
                     )}
-
                 </button>
 
                 <button onClick={nextDay}>
                     <ChevronRight className={toolbarStyles.icon} />
                 </button>
-
 
                 <button
                     onClick={today}

@@ -1,5 +1,6 @@
 import { TimelineItem , TimelineItemType } from "./types";
 import { TimelineStyles } from "./styles";
+import { tagNames, tagColours } from "../../types/ActivityTag";
 
 interface TimelineBlockProps 
 {
@@ -21,18 +22,38 @@ return (
         }
     `}
     style={{
-        top: `${top}px`,
-        height: `${height}px`
+        top: `${top+2}px`,
+        height: `${height-4}px`
     }}
 >
 
-    <div className={TimelineStyles.blockTitle}>
-        {item.title}
+    <div className={TimelineStyles.blockHeader}>
+        <div className={TimelineStyles.blockTitle}>
+            {item.title}
+        </div>
     </div>
 
     <div className={TimelineStyles.blockTime}>
         {item.start} - {item.end}
     </div>
+
+
+    <div className={TimelineStyles.tags}>
+        {
+            item.tags.map(tag => (
+                <span 
+                    key={tag}             
+                    className={`
+                        ${TimelineStyles.tag}
+                        ${tagColours[tag]}
+                    `}>
+                    {tagNames[tag]}
+                </span>
+            ))
+        }
+    </div>
+
+
     
 </div>
 );

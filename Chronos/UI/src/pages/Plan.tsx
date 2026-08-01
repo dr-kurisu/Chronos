@@ -1,22 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlanHeader, { PlanView } from "../components/plan/PlanHeader/PlanHeader";
-import TimeToolbar from "../components/plan/TimeToolbar/TimeToolbar";
+import TimeToolbar from "../components/Timeline/TimeToolbar/TimeToolbar";
 import PlanList from "../components/plan/PlanList/PlanList";
+import { Plan } from "../types/PlanTypes";
+import { fetchPlans } from "../services/PlanApi";
 
-function renderView(view: PlanView)
+function renderView(view: PlanView, plans: Plan[])
 {
     switch(view)
     {
-        case "list": return <PlanList />;
+        case "list": return <PlanList plans={plans}/>;
         case "kanban": return null;
-        default: return <PlanList />;
+        default: return <PlanList plans={plans}/>;
     }
 }
 
-export default function Plan() {
+export default function Plan() 
+{
     const [view,setView] = useState<PlanView>("list");
     const [date,setDate] = useState<Date>(new Date());
+    const [plans,setPlans] = useState<Plan[]>([]);
 
+    useEffect(()=>{
+        fetchPlans(date)
+            .then(data=>{
+                setPlans(data);
+            });
+
+    },[date]);
     return (
         <div>
             <PlanHeader
@@ -33,7 +44,7 @@ export default function Plan() {
                     console.log("open filter");
                 }}
             />
-            {renderView(view)}
+            {renderView(view, plans)}
         </div>
     );
 }

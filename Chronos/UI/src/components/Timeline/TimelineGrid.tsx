@@ -3,56 +3,25 @@ import { TimelineItem, TimelineItemType } from "./types";
 import { ActivityTag } from "../../types/ActivityTag";
 import { TimelineStyles } from "./styles";
 
-const START_HOUR = 0;
-const END_HOUR = 24;
+const START_HOUR = 6;
+const END_HOUR = 22;
 const HOUR_HEIGHT = 80;
 
-
-const mockItems: TimelineItem[] = [
-    {
-        id: 1,
-        title: "Implement Renderer",
-        start: "09:00",
-        end: "11:00",
-        tag: ActivityTag.Code,
-        type: TimelineItemType.Plan,
-    },
-    {
-        id: 2,
-        title: "Visual Studio",
-        start: "09:20",
-        end: "10:40",
-        tag: ActivityTag.Code,
-        type: TimelineItemType.Activity,
-    },
-    {
-        id: 3,
-        title: "Read Research Paper",
-        start: "14:00",
-        end: "15:30",
-        tag: ActivityTag.Study,
-        type: TimelineItemType.Plan,
-    },
-    {
-        id: 4,
-        title: "Chrome - arxiv",
-        start: "14:15",
-        end: "15:10",
-        tag: ActivityTag.Study,
-        type: TimelineItemType.Activity,
-    }
-];
+interface Props 
+{
+    items: TimelineItem[]
+}
 
 
-export default function TimelineGrid() {
+export default function TimelineGrid({items}: Props) {
     const hours = Array.from( {length: END_HOUR - START_HOUR + 1}, (_, i) => START_HOUR + i);
     const plans =
-        mockItems.filter(
+        items.filter(
             item =>
                 item.type === TimelineItemType.Plan
         );
     const activities =
-        mockItems.filter(
+        items.filter(
             item =>
                 item.type === TimelineItemType.Activity
         );
