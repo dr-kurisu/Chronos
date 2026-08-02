@@ -2,7 +2,7 @@
 #include <Activity/Activity.h>
 #include <Activity/ActivityUtils.h>
 #include <Activity/ActivityClassifier.h>
-#include <Activity/SQLiteActivityStorage.h>
+#include <Storage/SQLiteActivityStorage.h>
 
 chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): Base(desc.base), minDuration(desc.minDuration), m_storage(desc.storage)
 {

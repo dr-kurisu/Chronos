@@ -11,10 +11,10 @@
     <ClInclude Include="CH\Include\Activity\ActivityManager.h" />
     <ClInclude Include="CH\Include\Monitor\Monitor.h" />
     <ClInclude Include="CH\Include\Core\StringEncoding.h" />
-    <ClInclude Include="CH\Include\Activity\SQLiteActivityStorage.h" />
+    <ClInclude Include="CH\Include\Storage\SQLiteActivityStorage.h" />
     <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
     <ClInclude Include="CH\Include\Activity\ActivityClassifier.h" />
-    <ClInclude Include="CH\Include\Activity\IActivityStorage.h" />
+    <ClInclude Include="CH\Include\Storage\IActivityStorage.h" />
     <ClInclude Include="CH\Include\Core\Statement.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3ext.h" />
@@ -36,9 +36,9 @@
     <ClInclude Include="CH\Include\Core\All.h" />
     <ClInclude Include="CH\Include\Plan\Plan.h" />
     <ClInclude Include="CH\Include\Plan\PlanManager.h" />
-    <ClInclude Include="CH\Include\Plan\IPlanStorager.h" />
-    <ClInclude Include="CH\Include\Plan\SQLitePlanStorage.h" />
-    <ClInclude Include="CH\Include\Core\SQliteDatabase.h" />
+    <ClInclude Include="CH\Include\Storage\IPlanStorager.h" />
+    <ClInclude Include="CH\Include\Storage\SQLitePlanStorage.h" />
+    <ClInclude Include="CH\Include\Storage\SQLiteDatabase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
@@ -67,7 +67,7 @@
     <ClCompile Include="CH\ThirdParty\argon2\src\encoding.c" />
     <ClCompile Include="CH\Source\Analytics\ActivitySummary.cpp" />
     <ClCompile Include="CH\Source\Plan\PlanManager.cpp" />
-    <ClCompile Include="CH\Include\Plan\SQLitePlanStorage.cpp" />
+    <ClCompile Include="CH\Include\Storage\SQLitePlanStorage.cpp" />
     <ClCompile Include="CH\Source\Core\SQLiteDatabase.cpp" />
   </ItemGroup>
 </Project>

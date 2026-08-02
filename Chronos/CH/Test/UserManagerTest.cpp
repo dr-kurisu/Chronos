@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <User/UserManager.h>
-#include <Core/SQliteDatabase.h>
-#include <Activity/SQLiteActivityStorage.h>
+#include <Storage/SQliteDatabase.h>
+#include <Storage/SQLiteActivityStorage.h>
 
 namespace chronos 
 {

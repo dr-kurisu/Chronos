@@ -1,9 +1,10 @@
-#include <Activity/SQLiteActivityStorage.h>
 #include <Core/Statement.h>
+#include <User/User.h>
 #include <Activity/Activity.h>
 #include <Activity/ActivityTag.h>
-#include <Core/SQliteDatabase.h>
-#include <User/User.h>
+#include <Storage/SQLiteActivityStorage.h>
+#include <Storage/SQliteDatabase.h>
+
 #include <sqlite3.h>
 #include <assert.h>
 

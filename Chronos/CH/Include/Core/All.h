@@ -1,11 +1,11 @@
 #pragma once
-#include <Application/Application.h>
-#include <Monitor/Monitor.h>
-#include <Activity/ActivityManager.h>
+#include <Core/Logger.h>
 #include <User/UserManager.h>
+#include <Monitor/Monitor.h>
+#include <Application/Application.h>
 #include <Activity/Activity.h>
+#include <Activity/ActivityManager.h>
 #include <Analytics/RuleBasedSummaryGenerator.h>
 #include <Analytics/ActivitySummary.h>
-#include <Activity/SQLiteActivityStorage.h>
-#include <Core/Logger.h>
-#include <Core/SQliteDatabase.h>
+#include <Storage/SQLiteActivityStorage.h>
+#include <Storage/SQliteDatabase.h>

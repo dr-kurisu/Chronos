@@ -1,5 +1,5 @@
 #include <User/UserManager.h>
-#include <Activity/IActivityStorage.h>
+#include <Storage/IActivityStorage.h>
 #include <argon2.h>
 #include <bcrypt.h>
 #pragma comment(lib, "bcrypt.lib")

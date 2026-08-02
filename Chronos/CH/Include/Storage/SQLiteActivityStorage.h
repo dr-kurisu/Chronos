@@ -4,8 +4,7 @@
 #include <Core/Core.h>
 #include <filesystem>
 #include <Activity/Activity.h>
-#include <Activity/IActivityStorage.h>
-
+#include <Storage/IActivityStorage.h>
 #include <sqlite3.h>
 
 namespace chronos {

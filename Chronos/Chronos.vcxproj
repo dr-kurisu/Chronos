@@ -31,10 +31,10 @@
     <ClInclude Include="CH\Include\Activity\ActivityClassifier.h" />
     <ClInclude Include="CH\Include\Activity\ActivityTag.h" />
     <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
-    <ClInclude Include="CH\Include\Activity\SQLiteActivityStorage.h" />
+    <ClInclude Include="CH\Include\Storage\SQLiteActivityStorage.h" />
     <ClInclude Include="CH\Include\Activity\Activity.h" />
     <ClInclude Include="CH\Include\Activity\ActivityManager.h" />
-    <ClInclude Include="CH\Include\Activity\IActivityStorage.h" />
+    <ClInclude Include="CH\Include\Storage\IActivityStorage.h" />
     <ClInclude Include="CH\Include\Core\Statement.h" />
     <ClInclude Include="CH\Include\Analytics\ISummaryGenerator.h" />
     <ClInclude Include="CH\Include\Analytics\RuleBasedSummaryGenerator.h" />
@@ -48,9 +48,9 @@
     <ClInclude Include="CH\Include\Monitor\Windows\WindowsWatcher.h" />
     <ClInclude Include="CH\Include\Monitor\Monitor.h" />
     <ClInclude Include="CH\Include\Core\StringEncoding.h" />
-    <ClInclude Include="CH\Include\Plan\IPlanStorager.h" />
+    <ClInclude Include="CH\Include\Storage\IPlanStorager.h" />
     <ClInclude Include="CH\Include\Plan\Plan.h" />
-    <ClInclude Include="CH\Include\Plan\SQLitePlanStorage.h" />
+    <ClInclude Include="CH\Include\Storage\SQLitePlanStorage.h" />
     <ClInclude Include="CH\Include\User\User.h" />
     <ClInclude Include="CH\ThirdParty\argon2\include\argon2.h" />
     <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2-impl.h" />
@@ -64,10 +64,10 @@
     <ClInclude Include="CH\ThirdParty\sqlite3ext.h" />
     <ClInclude Include="CH\Include\User\UserManager.h" />
     <ClInclude Include="CH\Include\Plan\PlanManager.h" />
-    <ClInclude Include="CH\Include\Core\SQliteDatabase.h" />
+    <ClInclude Include="CH\Include\Storage\SQLiteDatabase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CH\Include\Plan\SQLitePlanStorage.cpp" />
+    <ClCompile Include="CH\Include\Storage\SQLitePlanStorage.cpp" />
     <ClCompile Include="CH\Source\Analytics\ActivitySummary.cpp" />
     <ClCompile Include="App\TestMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

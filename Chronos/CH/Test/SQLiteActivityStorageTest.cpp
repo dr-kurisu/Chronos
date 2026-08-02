@@ -1,7 +1,7 @@
-#include <gtest/gtest.h>
-#include <Activity/SQLiteActivityStorage.h>
-#include <Core/SQliteDatabase.h>
 #include <Core/Common.h>
+#include <Storage/SQliteDatabase.h>
+#include <Storage/SQLiteActivityStorage.h>
+#include <gtest/gtest.h>
 
 namespace chronos {
     class SQLiteActivityStorageTest : public ::testing::Test

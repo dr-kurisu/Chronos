@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Base.h>
-#include <Activity/IActivityStorage.h>
+#include <Storage/IActivityStorage.h>
 
 namespace chronos {
 	class ActivityManager : public Base {
