@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <User/UserManager.h>
 #include <Storage/SQliteDatabase.h>
-#include <Storage/SQLiteActivityStorage.h>
+#include <Storage/SQLiteUserStorage.h>
 
 namespace chronos 
 {
@@ -18,10 +18,10 @@ namespace chronos
 				.base = *m_logger,
 				.db = *m_db
 			};
-			m_storage = std::make_unique<SQLiteActivityStorage>(SQLiteDesc);
+			m_userStorage = std::make_unique<SQLiteUserStorage>(SQLiteDesc);
 			UserManagerDesc desc{
 				.base = *m_logger,
-				.storage = *m_storage
+				.storage = *m_userStorage
 			};
 			m_userManager = std::make_unique<UserManager>(desc);
 
@@ -31,7 +31,7 @@ namespace chronos
 	protected:
 		UniquePtr<Logger> m_logger;
 		RefPtr<SQLiteDatabase> m_db;
-		UniquePtr<SQLiteActivityStorage> m_storage;
+		UniquePtr<SQLiteUserStorage> m_userStorage;
 		UniquePtr<UserManager> m_userManager;
 	};
 

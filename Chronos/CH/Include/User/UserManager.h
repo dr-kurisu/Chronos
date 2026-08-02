@@ -1,7 +1,8 @@
 #pragma once
-#include <User/User.h>
+
 #include <Core/Base.h>
 #include <Core/Core.h>
+#include <User/User.h>
 #include <optional>
 
 namespace chronos 
@@ -31,7 +32,7 @@ namespace chronos
 	private:
 		std::array<uint8_t, 16> generateSalt() const;
 	private:
-		IActivityStorage& m_storage;
+		IUserStorage& m_storage;
 		std::optional<User> m_currentUser;
 	};
 }

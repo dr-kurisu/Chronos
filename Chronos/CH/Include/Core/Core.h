@@ -23,6 +23,7 @@ namespace chronos {
 	class IActivityStorage;
 	class ISummaryGenerator;
 	class IPlanStorage;
+	class IUserStorage;
 	class UserManager;
 	class ActivitySummary;
 	class PlanManager;

@@ -49,7 +49,7 @@ namespace chronos {
 
 	struct UserManagerDesc {
 		BaseDesc base;
-		IActivityStorage& storage;
+		IUserStorage& storage;
 	};
 
 	struct ActivitySummaryDesc {

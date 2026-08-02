@@ -13,19 +13,12 @@ namespace chronos {
 		explicit SQLiteActivityStorage(const SQLiteStorageDesc& desc);
 		~SQLiteActivityStorage() override;
 
-		// User
-		UserId createUser(const User& user) override;
-		bool updateUser(const User& user) override;
-		bool removeUser(UserId id) override;
-
 		// Activity
 		ActivityId insertActivity(const Activity& activity) override;
 		bool updateActivity(const Activity& activity) override;
 		bool removeActivity(ActivityId id) override;
 
 		// Query
-		std::optional<User> findUser(UserId id) override;
-		std::optional<User> findUserByName(std::string name) override;
 		std::vector<Activity> findActivities(UserId userId, Timestamp begin, Timestamp end) override;
 
 	protected:
@@ -33,7 +26,7 @@ namespace chronos {
 		SQLiteActivityStorage& operator=(const SQLiteActivityStorage&) = delete;
 
 	private:
-		bool createTables();
+		bool createTable();
 	private:
 		SQLiteDatabase& m_db;
 	};

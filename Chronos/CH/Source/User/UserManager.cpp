@@ -1,5 +1,6 @@
 #include <User/UserManager.h>
 #include <Storage/IActivityStorage.h>
+#include <Storage/SQLiteUserStorage.h>
 #include <argon2.h>
 #include <bcrypt.h>
 #pragma comment(lib, "bcrypt.lib")

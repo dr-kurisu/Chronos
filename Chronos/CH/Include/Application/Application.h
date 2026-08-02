@@ -22,8 +22,9 @@ namespace chronos {
 		UniquePtr<ActivitySummary> m_acSummary{};
 		UniquePtr<ISummaryGenerator> m_summaryGenerator{};
 
-		RefPtr<IActivityStorage> m_acStorage;
-		RefPtr<IPlanStorage> m_plStorage;
+		UniquePtr<IActivityStorage> m_acStorage;
+		UniquePtr<IUserStorage> m_userStorage;
+		UniquePtr<IPlanStorage> m_planStorage;
 		RefPtr<SQLiteDatabase> m_db;
 
 		bool m_isRunning = true;

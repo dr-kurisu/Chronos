@@ -39,6 +39,8 @@
     <ClInclude Include="CH\Include\Storage\IPlanStorager.h" />
     <ClInclude Include="CH\Include\Storage\SQLitePlanStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteDatabase.h" />
+    <ClInclude Include="CH\Include\Storage\IUserStorage.h" />
+    <ClInclude Include="CH\Include\Storage\SQLiteUserStorage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
@@ -69,5 +71,7 @@
     <ClCompile Include="CH\Source\Plan\PlanManager.cpp" />
     <ClCompile Include="CH\Include\Storage\SQLitePlanStorage.cpp" />
     <ClCompile Include="CH\Source\Core\SQLiteDatabase.cpp" />
+    <ClCompile Include="CH\Include\Storage\SQLiteUserStorage.cpp" />
+    <ClCompile Include="CH\Test\SQLiteUserStorageTest.cpp" />
   </ItemGroup>
 </Project>
