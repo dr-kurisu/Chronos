@@ -35,7 +35,7 @@
     <ClInclude Include="CH\Include\Activity\Activity.h" />
     <ClInclude Include="CH\Include\Activity\ActivityManager.h" />
     <ClInclude Include="CH\Include\Activity\IActivityStorage.h" />
-    <ClInclude Include="CH\Include\Activity\Statement.h" />
+    <ClInclude Include="CH\Include\Core\Statement.h" />
     <ClInclude Include="CH\Include\Analytics\ISummaryGenerator.h" />
     <ClInclude Include="CH\Include\Analytics\RuleBasedSummaryGenerator.h" />
     <ClInclude Include="CH\Include\Analytics\Summary.h" />
@@ -48,6 +48,9 @@
     <ClInclude Include="CH\Include\Monitor\Windows\WindowsWatcher.h" />
     <ClInclude Include="CH\Include\Monitor\Monitor.h" />
     <ClInclude Include="CH\Include\Core\StringEncoding.h" />
+    <ClInclude Include="CH\Include\Plan\IPlanStorager.h" />
+    <ClInclude Include="CH\Include\Plan\Plan.h" />
+    <ClInclude Include="CH\Include\Plan\SQLitePlanStorage.h" />
     <ClInclude Include="CH\Include\User\User.h" />
     <ClInclude Include="CH\ThirdParty\argon2\include\argon2.h" />
     <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2-impl.h" />
@@ -60,8 +63,11 @@
     <ClInclude Include="CH\ThirdParty\sqlite3.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3ext.h" />
     <ClInclude Include="CH\Include\User\UserManager.h" />
+    <ClInclude Include="CH\Include\Plan\PlanManager.h" />
+    <ClInclude Include="CH\Include\Core\SQliteDatabase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CH\Include\Plan\SQLitePlanStorage.cpp" />
     <ClCompile Include="CH\Source\Analytics\ActivitySummary.cpp" />
     <ClCompile Include="App\TestMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -95,6 +101,8 @@
     <ClCompile Include="CH\ThirdParty\sqlite3.c" />
     <ClCompile Include="CH\Test\SQLiteActivityStorageTest.cpp" />
     <ClCompile Include="CH\Source\User\UserManager.cpp" />
+    <ClCompile Include="CH\Source\Plan\PlanManager.cpp" />
+    <ClCompile Include="CH\Source\Core\SQLiteDatabase.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -120,7 +128,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -134,7 +142,7 @@
     <PlatformToolset>v145</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Test|x64'">
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

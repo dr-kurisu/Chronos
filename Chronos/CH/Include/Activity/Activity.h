@@ -23,8 +23,6 @@ namespace chronos {
         Distracting
     };
 
-
-
     struct Activity
     {
         ActivityId id{-1};

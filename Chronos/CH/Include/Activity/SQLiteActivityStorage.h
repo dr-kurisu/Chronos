@@ -8,13 +8,11 @@
 
 #include <sqlite3.h>
 
-
 namespace chronos {
 	class SQLiteActivityStorage : public Base, public IActivityStorage {
 	public:
-		explicit SQLiteActivityStorage(const SQLiteACStorageDesc& desc);
+		explicit SQLiteActivityStorage(const SQLiteStorageDesc& desc);
 		~SQLiteActivityStorage() override;
-		void configureDatabase();
 
 		// User
 		UserId createUser(const User& user) override;
@@ -37,11 +35,8 @@ namespace chronos {
 
 	private:
 		bool createTables();
-		bool execute(std::string_view sql);
-		bool execute(Statement& stmt);
-		Statement prepare(std::string_view sql);
 	private:
-		sqlite3* m_db{};
+		SQLiteDatabase& m_db;
 	};
 }
 

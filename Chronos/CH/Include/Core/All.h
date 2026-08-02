@@ -8,3 +8,4 @@
 #include <Analytics/ActivitySummary.h>
 #include <Activity/SQLiteActivityStorage.h>
 #include <Core/Logger.h>
+#include <Core/SQliteDatabase.h>

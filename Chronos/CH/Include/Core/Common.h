@@ -37,7 +37,12 @@ namespace chronos {
 		IActivityStorage& storage;
 	};
 
-	struct SQLiteACStorageDesc {
+	struct SQLiteStorageDesc {
+		BaseDesc base;
+		SQLiteDatabase& db;
+	};
+
+	struct SQLiteDatabaseDesc {
 		BaseDesc base;
 		std::filesystem::path storagePath = "";
 	};
@@ -50,5 +55,10 @@ namespace chronos {
 	struct ActivitySummaryDesc {
 		BaseDesc base;
 		ISummaryGenerator& generator;
+	};
+
+	struct PlanManagerDesc {
+		BaseDesc base;
+		IActivityStorage& storage;
 	};
 };

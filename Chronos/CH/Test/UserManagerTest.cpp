@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <User/UserManager.h>
+#include <Core/SQliteDatabase.h>
 #include <Activity/SQLiteActivityStorage.h>
 
 namespace chronos 
@@ -9,9 +10,13 @@ namespace chronos
 	public:
 		void SetUp() override {
 			m_logger = std::make_unique<Logger>(Logger::LogLevel::Error);
-			SQLiteACStorageDesc SQLiteDesc{
+			m_db = std::make_shared<SQLiteDatabase>(SQLiteDatabaseDesc{
 				.base = *m_logger,
 				.storagePath = ":memory:"
+			});
+			SQLiteStorageDesc SQLiteDesc{
+				.base = *m_logger,
+				.db = *m_db
 			};
 			m_storage = std::make_unique<SQLiteActivityStorage>(SQLiteDesc);
 			UserManagerDesc desc{
@@ -25,6 +30,7 @@ namespace chronos
 
 	protected:
 		UniquePtr<Logger> m_logger;
+		RefPtr<SQLiteDatabase> m_db;
 		UniquePtr<SQLiteActivityStorage> m_storage;
 		UniquePtr<UserManager> m_userManager;
 	};

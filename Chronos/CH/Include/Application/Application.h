@@ -1,6 +1,7 @@
 #pragma once
 #include <Core/Base.h>
 #include <Core/Core.h>
+#include <sqlite3.h>
 
 
 namespace chronos {
@@ -20,7 +21,10 @@ namespace chronos {
 		UniquePtr<UserManager> m_userManager{};
 		UniquePtr<ActivitySummary> m_acSummary{};
 		UniquePtr<ISummaryGenerator> m_summaryGenerator{};
-		RefPtr<IActivityStorage> m_storage;
+
+		RefPtr<IActivityStorage> m_acStorage;
+		RefPtr<IPlanStorage> m_plStorage;
+		RefPtr<SQLiteDatabase> m_db;
 
 		bool m_isRunning = true;
 	};

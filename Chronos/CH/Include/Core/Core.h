@@ -22,10 +22,14 @@ namespace chronos {
 	class Statement;
 	class IActivityStorage;
 	class ISummaryGenerator;
+	class IPlanStorage;
 	class UserManager;
 	class ActivitySummary;
+	class PlanManager;
+	class SQLiteDatabase;
 
 	struct Activity;
+	struct Plan;
 	struct WindowInfo;
 
 	template <typename T> using UniquePtr = std::unique_ptr<T>;
