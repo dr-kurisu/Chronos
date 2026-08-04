@@ -55,7 +55,7 @@ void chronos::ActivityManager::printCurrentActivity()
         ac->window.pid,
         ac->window.title,
         ac->window.processName,
-        ac->tagIds,
+        ActivityUtils::vectorToString(ac->tagIds),
         ActivityUtils::timePointToString(ac->startTime),
         ActivityUtils::timePointToString(ac->endTime)
     );

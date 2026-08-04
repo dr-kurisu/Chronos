@@ -1,5 +1,6 @@
 #include <Storage/SQLiteTagStorage.h>
 #include <Storage/SQLiteDatabase.h>
+#include <Tag/BuildinTags.h>
 
 using namespace chronos;
 
@@ -10,12 +11,12 @@ SQLiteTagStorage::SQLiteTagStorage(const SQLiteStorageDesc& desc):
 	{
 		ChronosLogError("Failed to create PlanSQLite tables.");
 	}
-	ChronosLogInfo("PlanDatabase initialised");
+	ChronosLogInfo("TagDatabase initialised");
 }
 
 TagId SQLiteTagStorage::createTag(UserId userId, const Tag& tag)
 {
-	// check tag
+	// check params
 	if (!tag.isValid()) 
 	{
 		ChronosLogWarning("Fail to insert invalid tag.");
@@ -83,7 +84,7 @@ std::vector<Tag> SQLiteTagStorage::getAllTags(UserId userId)
 	while (sqlite3_step(stmt.get()) == SQLITE_ROW)
 	{
 		Tag tag;
-		tag.id = sqlite3_column_int64(stmt.get(), 0);
+		tag.id = sqlite3_column_int(stmt.get(), 0);
 		tag.userId = userId;
 		tag.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt.get(), 1));
 		tag.colour = reinterpret_cast<const char*>(sqlite3_column_text(stmt.get(), 2));
@@ -188,17 +189,61 @@ bool SQLiteTagStorage::hasTag(UserId userId, TagId id)
 	return result == SQLITE_ROW;
 }
 
+bool SQLiteTagStorage::ensureBuiltinTags(UserId userId)
+{
+	// Check id
+	if (userId < 0)
+	{
+		ChronosLogWarning("Failed to ensure builtin tags with invalid userId");
+		return false;
+	}
+	// Check if already has buildin tags
+	auto tags = getAllTags(userId);
+	for (const auto& builtin : BuiltinTags)
+	{
+		bool exists = false;
+
+		for (const auto& tag : tags)
+		{
+			if (tag.name == builtin.name && tag.builtin)
+			{
+				exists = true;
+				break;
+			}
+		}
+
+		if (exists)
+			continue;
+		// If not exist, create buildin tags
+		Tag tag = builtin;
+		tag.id = -1;
+		tag.userId = userId;
+
+		int newTagId = createTag(userId, tag);
+		if (newTagId < 0)
+		{
+			ChronosLogError(
+				"Failed to create builtin tag {}",
+				tag.name
+			);
+			return false;
+		}
+	}
+	return true;
+}
+
 bool SQLiteTagStorage::createTable()
 {
 	auto success = m_db.execute(R"(
-		CREATE TABLE IF NOT EXIST Tags
+		CREATE TABLE IF NOT EXISTS Tags
 		(
 			Id           INTEGER PRIMARY KEY AUTOINCREMENT,
+			UserId		 INTEGER NOT NULL,
 			Name		 TEXT NOT NULL,
 			Colour		 TEXT NOT NULL,
 			Description  TEXT,
-			Builtin      INTEGER NOT NULL,
-		)
+			Builtin      INTEGER NOT NULL
+		);
 	)");
 
 	return success;

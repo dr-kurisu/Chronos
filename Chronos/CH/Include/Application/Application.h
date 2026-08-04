@@ -23,6 +23,7 @@ namespace chronos {
 		UniquePtr<ISummaryGenerator> m_summaryGenerator{};
 
 		UniquePtr<IActivityStorage> m_acStorage;
+		UniquePtr<ITagStorage> m_tagStorage;
 		UniquePtr<IUserStorage> m_userStorage;
 		UniquePtr<IPlanStorage> m_planStorage;
 		RefPtr<SQLiteDatabase> m_db;

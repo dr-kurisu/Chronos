@@ -19,7 +19,7 @@ SQLitePlanStorage::~SQLitePlanStorage()
 
 PlanId SQLitePlanStorage::insertPlan(const Plan& plan)
 {
-	
+	return -1;
 }
 
 bool SQLitePlanStorage::updatePlan(const Plan& plan)
@@ -47,7 +47,7 @@ bool SQLitePlanStorage::createTable()
 	// Need modify
 	bool success = true;
 	success &= m_db.execute(R"(
-		CREATE TABLE IF NOT EXIST Plans
+		CREATE TABLE IF NOT EXISTS Plans
 		(
 			Id           INTEGER PRIMARY KEY AUTOINCREMENT,
 			Title		 TEXT NOT NULL,
@@ -55,7 +55,8 @@ bool SQLitePlanStorage::createTable()
 			StartTime	 INTEGER NOT NULL,
 			EndTime		 INTEGER NOT NULL,
 			Priority     INTEGER NOT NULL,
-			Tags		 INTEGER NOT NULL,
-		)
+			Tags		 INTEGER NOT NULL
+		);
 	)");
+	return success;
 }

@@ -1,12 +1,12 @@
 #include <Core/All.h>
-#include <Storage/SQLiteUserStorage.h>
-#include <Storage/SQLitePlanStorage.h>
+
 
 chronos::Application::Application(const ApplicationDesc& desc)
 {
 	m_logger = std::make_unique<Logger>(desc.level);
 	m_db = std::make_shared<SQLiteDatabase>(SQLiteDatabaseDesc{*m_logger, desc.storagePath});
 	m_acStorage = std::make_unique<SQLiteActivityStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
+	m_tagStorage = std::make_unique<SQLiteTagStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
 	m_userStorage = std::make_unique<SQLiteUserStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
 	m_planStorage = std::make_unique<SQLitePlanStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
 
@@ -31,7 +31,7 @@ chronos::Application::Application(const ApplicationDesc& desc)
 
 	ChronosLogInfo("Creating AC Summary...");
 	m_summaryGenerator = std::make_unique<RuleBasedSummaryGenerator>();
-	m_acSummary = std::make_unique<ActivitySummary>(ActivitySummaryDesc{ *m_logger, *m_summaryGenerator });
+	m_acSummary = std::make_unique<ActivitySummary>(ActivitySummaryDesc{ *m_logger, *m_acStorage, *m_tagStorage, *m_summaryGenerator });
 
 	// Login default account
 	login();

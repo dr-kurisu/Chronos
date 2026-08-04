@@ -55,6 +55,8 @@ namespace chronos {
 
 	struct ActivitySummaryDesc {
 		BaseDesc base;
+		IActivityStorage& acStorage;
+		ITagStorage& tagStorage;
 		ISummaryGenerator& generator;
 	};
 

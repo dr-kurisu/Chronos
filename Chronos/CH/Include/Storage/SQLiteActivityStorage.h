@@ -19,12 +19,12 @@ namespace chronos {
 		bool removeActivity(ActivityId id) override;
 
 		// Tags
-		bool addTags(ActivityId activityId, std::vector<TagId> tagIds) override;
+		bool addTags(ActivityId activityId, std::span<const TagId> tagIds) override;
 		bool removeTag(ActivityId activityId, TagId tagId) override;
 
 		// Query
 		std::vector<Activity> findActivities(UserId userId, Timestamp begin, Timestamp end) override;
-		bool hasTag(UserId userId, TagId id) override;
+		bool hasTag(ActivityId id, TagId tagId) override;
 		std::vector<TagId> getAllTags(ActivityId activityId) override;
 	protected:
 		SQLiteActivityStorage(const SQLiteActivityStorage&) = delete;

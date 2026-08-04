@@ -17,6 +17,8 @@ namespace chronos
 
 	private:
 		ISummaryGenerator& m_generator;
+		IActivityStorage& m_acStorage;
+		ITagStorage& m_tagStorage;
 	};
 }
 

@@ -2,6 +2,7 @@
 
 #include <Core/Core.h>
 #include <Activity/Activity.h>
+#include <span>
 
 namespace chronos {
     class IActivityStorage
@@ -15,7 +16,11 @@ namespace chronos {
         virtual bool removeActivity(ActivityId) = 0;
 
         // Tags
-		virtual bool addTags(ActivityId, std::vector<TagId>) = 0;
+		virtual bool addTags(ActivityId, std::span<const TagId>) = 0;
+        bool addTags(ActivityId id, std::initializer_list<TagId> tags) 
+        {
+            return addTags(id, std::span<const TagId>(tags.begin(), tags.size()));
+        }
 		virtual bool removeTag(ActivityId, TagId) = 0;
 
         // Query
@@ -24,7 +29,7 @@ namespace chronos {
             Timestamp,
             Timestamp) = 0;
 
-		virtual bool hasTag(UserId userId, TagId id) = 0;
+		virtual bool hasTag(ActivityId id, TagId tagId) = 0;
 		virtual std::vector<TagId> getAllTags(ActivityId activityId) = 0;
     };
 }

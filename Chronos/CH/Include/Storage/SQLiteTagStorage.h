@@ -13,6 +13,7 @@ namespace chronos
         bool updateTag(UserId userId, const Tag& tag) override;
         bool removeTag(UserId userId, TagId id) override;
         bool hasTag(UserId userId, TagId id) override;
+        bool ensureBuiltinTags(UserId userId) override;
     private:
         bool createTable();
 

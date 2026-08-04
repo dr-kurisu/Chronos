@@ -58,7 +58,7 @@ namespace chronos {
 
     }
 
-    TEST_F(SQLiteTagStorageTest, InsertValidTag)
+    TEST_F(SQLiteTagStorageTest, 1)
     {
 
     }

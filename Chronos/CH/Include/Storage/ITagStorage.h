@@ -9,18 +9,16 @@ namespace chronos {
     public:
         virtual ~ITagStorage() = default;
 
-        virtual TagId createTag(UserId userId, const Tag& tag) = 0;
+        virtual TagId createTag(UserId, const Tag&) = 0;
 
-        virtual std::optional<Tag> getTag(UserId userId, TagId id) = 0;
+        virtual std::vector<Tag> getAllTags(UserId ) = 0;
 
-        virtual std::optional<Tag> getTagByName(UserId userId, std::string_view name) = 0;
+        virtual bool updateTag(UserId, const Tag&) = 0;
 
-        virtual std::vector<Tag> getAllTags(UserId userId) = 0;
+        virtual bool removeTag(UserId, TagId) = 0;
 
-        virtual bool updateTag(UserId userId, const Tag& tag) = 0;
+        virtual bool hasTag(UserId, TagId) = 0;
 
-        virtual bool removeTag(UserId userId, TagId id) = 0;
-
-        virtual bool hasTag(UserId userId, TagId id) = 0;
+        virtual bool ensureBuiltinTags(UserId) = 0;
     };
 }
