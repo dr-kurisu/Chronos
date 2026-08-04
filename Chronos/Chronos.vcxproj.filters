@@ -18,7 +18,7 @@
     <ClInclude Include="CH\Include\Core\Statement.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3.h" />
     <ClInclude Include="CH\ThirdParty\sqlite3ext.h" />
-    <ClInclude Include="CH\Include\Activity\ActivityTag.h" />
+    <ClInclude Include="CH\Include\Tag\Tag.h" />
     <ClInclude Include="CH\Include\User\UserManager.h" />
     <ClInclude Include="CH\Include\User\User.h" />
     <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2-impl.h" />
@@ -41,6 +41,8 @@
     <ClInclude Include="CH\Include\Storage\SQLiteDatabase.h" />
     <ClInclude Include="CH\Include\Storage\IUserStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteUserStorage.h" />
+    <ClInclude Include="CH\Include\Storage\SQLiteTagStorage.h" />
+    <ClInclude Include="CH\Include\Storage\ITagStorage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
@@ -52,7 +54,7 @@
     <ClCompile Include="CH\Source\Activity\ActivityManager.cpp" />
     <ClCompile Include="CH\Source\Monitor\Monitor.cpp" />
     <ClCompile Include="CH\Source\Core\StringEncoding.cpp" />
-    <ClCompile Include="CH\Source\Activity\SQLiteActivityStorage.cpp" />
+    <ClCompile Include="CH\Source\Storage\SQLiteActivityStorage.cpp" />
     <ClCompile Include="CH\Source\Activity\ActivityUtils.cpp" />
     <ClCompile Include="CH\Source\Activity\ActivityClassifier.cpp" />
     <ClCompile Include="CH\ThirdParty\sqlite3.c" />
@@ -69,9 +71,12 @@
     <ClCompile Include="CH\ThirdParty\argon2\src\encoding.c" />
     <ClCompile Include="CH\Source\Analytics\ActivitySummary.cpp" />
     <ClCompile Include="CH\Source\Plan\PlanManager.cpp" />
-    <ClCompile Include="CH\Include\Storage\SQLitePlanStorage.cpp" />
+    <ClCompile Include="CH\Source\Storage\SQLitePlanStorage.cpp" />
     <ClCompile Include="CH\Source\Core\SQLiteDatabase.cpp" />
-    <ClCompile Include="CH\Include\Storage\SQLiteUserStorage.cpp" />
+    <ClCompile Include="CH\Source\Storage\SQLiteUserStorage.cpp" />
     <ClCompile Include="CH\Test\SQLiteUserStorageTest.cpp" />
+    <ClCompile Include="CH\Source\Storage\SQLiteTagStorage.cpp" />
+    <ClCompile Include="CH\Test\SQLiteTagStorageTest.cpp" />
+    <ClCompile Include="CH\Include\Tag\BuildinTags.h" />
   </ItemGroup>
 </Project>

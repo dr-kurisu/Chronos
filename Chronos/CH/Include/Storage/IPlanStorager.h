@@ -10,13 +10,13 @@ namespace chronos
     class IPlanStorage
     {
     public:
-        virtual PlanId insert(const Plan&) = 0;
-        virtual bool update(const Plan&) = 0;
-        virtual bool remove(PlanId) = 0;
+        virtual PlanId insertPlan(const Plan&) = 0;
+        virtual bool updatePlan(const Plan&) = 0;
+        virtual bool removePlan(PlanId) = 0;
 
-        virtual std::optional<Plan> find(PlanId) = 0;
+        virtual std::optional<Plan> findPlan(PlanId) = 0;
 
-        virtual std::vector<Plan> findByUser(
+        virtual std::vector<Plan> findPlanByUser(
             UserId,
             Timestamp,
             Timestamp) = 0;

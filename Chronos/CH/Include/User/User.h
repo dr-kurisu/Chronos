@@ -1,10 +1,9 @@
 #pragma once
 #include <string>
 #include <cstdint>
+#include <Core/Core.h>
 
 namespace chronos {
-	using UserId = std::int64_t;
-	using Timestamp = std::int64_t;
 	struct User
 	{
 		UserId id{ -1 };

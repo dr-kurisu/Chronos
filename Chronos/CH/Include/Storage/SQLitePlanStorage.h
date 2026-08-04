@@ -7,18 +7,20 @@ namespace chronos
 {
 	class SQLitePlanStorage : public Base, public IPlanStorage {
 	public:
-		SQLitePlanStorage(const SQLiteStorageDesc& desc);
+		explicit SQLitePlanStorage(const SQLiteStorageDesc& desc);
 		~SQLitePlanStorage();
-		PlanId insert(const Plan&) override;
-		bool update(const Plan&) override;
-		bool remove(PlanId) override;
-		std::optional<Plan> find(PlanId) override;
-		std::vector<Plan> findByUser(
+		PlanId insertPlan(const Plan&) override;
+		bool updatePlan(const Plan&) override;
+		bool removePlan(PlanId) override;
+		std::optional<Plan> findPlan(PlanId) override;
+		std::vector<Plan> findPlanByUser(
 			UserId,
 			Timestamp,
 			Timestamp) override;
+	private:
+		bool createTable();
 
 	private:
-		sqlite3* m_db{};
+		SQLiteDatabase& m_db;
 	};
 }

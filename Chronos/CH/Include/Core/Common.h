@@ -25,6 +25,7 @@ namespace chronos {
 
 	struct ActivityClassifierDesc {
 		BaseDesc base;
+		IActivityStorage& storage;
 	};
 
 	struct ActivityManagerDesc {

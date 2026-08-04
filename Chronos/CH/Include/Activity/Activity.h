@@ -4,7 +4,7 @@
 #include <chrono>
 #include <Core/Core.h>
 #include <User/User.h>
-#include <Activity/ActivityTag.h>
+#include <Tag/Tag.h>
 
 namespace chronos {
     struct WindowInfo
@@ -31,8 +31,8 @@ namespace chronos {
         std::chrono::system_clock::time_point startTime;
         std::chrono::system_clock::time_point endTime;
         ActivityCategory category = ActivityCategory::Unknown;
-        ActivityTags tags{0};
-
+        std::vector<TagId> tagIds;
+        
         Activity() 
         {
         }

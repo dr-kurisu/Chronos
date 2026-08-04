@@ -1,11 +1,10 @@
 #pragma once
-#include <string>
-#include <Activity/ActivityTag.h>
 
+#include <Core/Core.h>
+#include <string>
 
 namespace chronos 
 {
-	using PlanId = std::int64_t;
 	enum class PlanStatus
 	{
 		Todo,
@@ -29,7 +28,7 @@ namespace chronos
 		std::string startTime{};
 		std::string endTime{};
 		PlanPriority priority;
-		ActivityTags tags;
+		std::vector<TagId> tagIds;
 		std::string createdAt;
 		PlanStatus status;
 	};

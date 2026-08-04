@@ -1,12 +1,13 @@
+#include <Core/Core.h>
 #include <Core/Statement.h>
 #include <User/User.h>
 #include <Activity/Activity.h>
-#include <Activity/ActivityTag.h>
 #include <Storage/SQLiteActivityStorage.h>
 #include <Storage/SQliteDatabase.h>
-
+#include <Tag/Tag.h>
 #include <sqlite3.h>
 #include <assert.h>
+#include <unordered_map>
 
 using namespace chronos;
 
@@ -40,10 +41,9 @@ ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
             EndTime,
             ProcessName,
             WindowTitle,
-            Tag
         )
         VALUES
-        (?, ?, ?, ?, ?, ?);
+        (?, ?, ?, ?, ?);
     )";
 
     Statement stmt = m_db.prepare(sql);
@@ -54,7 +54,6 @@ ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
     sqlite3_bind_int64(stmt.get(), 3, activity.convertTimePoint(activity.endTime));
     sqlite3_bind_text(stmt.get(), 4, activity.window.processName.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt.get(), 5, activity.window.title.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int64(stmt.get(), 6, static_cast<int64_t>(activity.tags));
 
     if (!m_db.execute(stmt)) return -1;
     UserId id = static_cast<UserId>(
@@ -79,7 +78,6 @@ bool SQLiteActivityStorage::updateActivity(const Activity& activity)
             EndTime = ?,
             ProcessName = ?,
             WindowTitle = ?,
-            Tag = ?
         WHERE
             Id = ?;
     )";
@@ -96,8 +94,7 @@ bool SQLiteActivityStorage::updateActivity(const Activity& activity)
     sqlite3_bind_int64(stmt.get(), 3, activity.convertTimePoint(activity.endTime));
     sqlite3_bind_text(stmt.get(), 4, activity.window.processName.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt.get(), 5, activity.window.title.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int64(stmt.get(), 6, static_cast<int64_t>(activity.tags));
-    sqlite3_bind_int64(stmt.get(), 7, activity.id);
+    sqlite3_bind_int64(stmt.get(), 6, activity.id);
 
     if (!m_db.execute(stmt)) return false;
     if (sqlite3_changes(m_db.handle()) == 0) 
@@ -108,6 +105,8 @@ bool SQLiteActivityStorage::updateActivity(const Activity& activity)
     ChronosLogInfo("Successfully update activity with Id: {}, title: {}", activity.id, activity.window.title);
     return true;
 }
+
+
 
 bool SQLiteActivityStorage::removeActivity(ActivityId id)
 {
@@ -134,6 +133,61 @@ bool SQLiteActivityStorage::removeActivity(ActivityId id)
     return true;
 }
 
+bool SQLiteActivityStorage::addTags(ActivityId activityId, std::vector<TagId> tagIds)
+{
+    // Check params
+    if (activityId < 0 || tagIds.empty()) 
+    {
+        ChronosLogWarning("Failed to addTags with invalid params");
+        return false;
+    }
+    constexpr std::string_view sql = R"(
+        INSERT INTO ActivityTags
+        (
+            ActivityId,
+            TagId
+        )
+        VALUES
+        (?, ?);
+    )";
+    Statement stmt = m_db.prepare(sql);
+    if (!stmt) return false;
+    for (const auto& tagId : tagIds)
+    {
+        sqlite3_bind_int64(stmt.get(), 1, activityId);
+        sqlite3_bind_int64(stmt.get(), 2, tagId);
+        if (!m_db.execute(stmt)) return false;
+        sqlite3_reset(stmt.get());
+    }
+    return true;
+}
+
+bool SQLiteActivityStorage::removeTag(ActivityId activityId, TagId tagId)
+{
+    // Check params
+    if (activityId < 0 || tagId < 0) 
+    {
+        ChronosLogWarning("Failed to removeTag with invalid params");
+        return false;
+    }
+    constexpr std::string_view sql = R"(
+        DELETE FROM ActivityTags
+        WHERE ActivityId = ?
+          AND TagId = ?;
+    )";
+    Statement stmt = m_db.prepare(sql);
+    if (!stmt) return false;
+    sqlite3_bind_int64(stmt.get(), 1, activityId);
+    sqlite3_bind_int64(stmt.get(), 2, tagId);
+    if (!m_db.execute(stmt)) return false;
+    if (sqlite3_changes(m_db.handle()) == 0) 
+    {
+        ChronosLogWarning("Fail to remove TagId: {} with ActivityId: {}.", tagId, activityId);
+        return false;
+    }
+    return true;
+}
+
 std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Timestamp begin, Timestamp end)
 {   
     std::vector<Activity> activities;
@@ -150,11 +204,21 @@ std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Times
     }
 
     constexpr std::string_view sql = R"(
-        SELECT * FROM Activities
-        WHERE UserId = ?
-              AND StartTime < ?
-              AND EndTime > ?
-        ORDER BY StartTime ASC;
+        SELECT
+            a.Id,
+            a.UserId,
+            a.ProcessName,
+            a.Title,
+            a.StartTime,
+            a.EndTime,
+            t.Id
+        FROM Activities a
+        LEFT JOIN ActivityTags t
+        ON a.Id = t.ActivityId
+        WHERE a.UserId = ?
+          AND a.StartTime < ?
+          AND a.EndTime > ?
+        ORDER BY a.StartTime;
     )";
     Statement stmt = m_db.prepare(sql);
     if (!stmt) return activities;
@@ -164,32 +228,89 @@ std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Times
     sqlite3_bind_int64(stmt.get(), 3, begin);
     // step
     const int result = sqlite3_step(stmt.get());
+    std::vector<Activity> activities;
+    std::unordered_map<ActivityId, size_t> activityMap;
     while (sqlite3_step(stmt.get()) == SQLITE_ROW)
     {
-        Activity activity;
-
-        activity.id = sqlite3_column_int64(stmt.get(), 0);
-        activity.userId = sqlite3_column_int64(stmt.get(), 1);
-
-        activity.window.processName =
-            reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt.get(), 2)
-                );
-
-        activity.window.title =
-            reinterpret_cast<const char*>(
-                sqlite3_column_text(stmt.get(), 3)
-                );
-
-        activity.startTime = Activity::convertTimestamp(sqlite3_column_int64(stmt.get(), 4));
-           
-        activity.endTime = Activity::convertTimestamp(sqlite3_column_int64(stmt.get(), 5));
-
-        activity.tags = static_cast<ActivityTags>(sqlite3_column_int(stmt.get(), 6));
-
-        activities.push_back(std::move(activity));
+        ActivityId id = sqlite3_column_int64(stmt.get(), 0);
+        size_t index;
+        auto it = activityMap.find(id);
+        // First added into map
+        if (it == activityMap.end()) {
+            Activity ac;
+            ac.id = sqlite3_column_int64(stmt.get(), 0);
+            ac.userId = sqlite3_column_int64(stmt.get(), 1);
+            ac.window.processName =
+                reinterpret_cast<const char*>(sqlite3_column_text(stmt.get(), 2));
+            ac.window.title =
+                reinterpret_cast<const char*>(sqlite3_column_text(stmt.get(), 3));
+            ac.startTime = Activity::convertTimestamp(sqlite3_column_int64(stmt.get(), 4));
+            ac.endTime = Activity::convertTimestamp(sqlite3_column_int64(stmt.get(), 5));
+            activities.push_back(std::move(ac));
+            index = activities.size() - 1;
+            activityMap.emplace(id, index);
+        }
+        // Already in the map
+        else  {
+            index = it->second;
+        }
+        // If has tag
+        if (sqlite3_column_type(stmt.get(), 6) != SQLITE_NULL)
+        {
+            activities[index].tagIds.push_back(
+                sqlite3_column_int64(stmt.get(), 6
+                ));
+        }
     }
     return activities;
+}
+
+bool SQLiteActivityStorage::hasTag(UserId userId, TagId id)
+{
+    // Check ids
+    if (userId < 0 || id < 0) 
+    {
+        ChronosLogWarning("Failed to hasTag with invalid params");
+        return false;
+    }
+    constexpr std::string_view sql = R"(
+        SELECT 1
+        FROM ActivityTags t
+        JOIN Activities a ON t.ActivityId = a.Id
+        WHERE a.UserId = ?
+          AND t.TagId = ?
+        LIMIT 1;
+    )";
+    Statement stmt = m_db.prepare(sql);
+    if (!stmt) return false;
+    sqlite3_bind_int64(stmt.get(), 1, userId);
+    sqlite3_bind_int64(stmt.get(), 2, id);
+    const int result = sqlite3_step(stmt.get());
+    return result == SQLITE_ROW;
+}
+
+std::vector<TagId> chronos::SQLiteActivityStorage::getAllTags(ActivityId activityId)
+{
+    if (activityId < 0) 
+    {
+        ChronosLogWarning("Failed to getAllTags with invalid activityId");
+        return {};
+	}
+    constexpr std::string_view sql = R"(
+        SELECT TagId
+        FROM ActivityTags
+        WHERE ActivityId = ?;
+    )";
+
+	Statement stmt = m_db.prepare(sql);
+    if (!stmt) return {};
+    sqlite3_bind_int64(stmt.get(), 1, activityId);
+    std::vector<TagId> tagIds;
+    while (sqlite3_step(stmt.get()) == SQLITE_ROW)
+    {
+        tagIds.push_back(sqlite3_column_int64(stmt.get(), 0));
+    }
+	return tagIds;
 }
 
 bool SQLiteActivityStorage::createTable()

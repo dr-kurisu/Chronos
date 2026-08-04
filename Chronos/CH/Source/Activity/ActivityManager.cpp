@@ -4,9 +4,10 @@
 #include <Activity/ActivityClassifier.h>
 #include <Storage/SQLiteActivityStorage.h>
 
-chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): Base(desc.base), minDuration(desc.minDuration), m_storage(desc.storage)
+chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): 
+	Base(desc.base), minDuration(desc.minDuration), m_storage(desc.storage)
 {
-    m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base });
+    m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base, m_storage });
 }
 
 chronos::ActivityManager::~ActivityManager()
@@ -47,14 +48,14 @@ void chronos::ActivityManager::printCurrentActivity()
         "PID: {}\n"
         "Title: {}\n"
         "Process: {}\n"
-        "Tags: {}\n"
+        "TagIds: {}\n"
         "Start: {}\n"
         "End: {}\n\n",
         ac->userId,
         ac->window.pid,
         ac->window.title,
         ac->window.processName,
-        ActivityUtils::tagsToString(ac->tags),
+        ac->tagIds,
         ActivityUtils::timePointToString(ac->startTime),
         ActivityUtils::timePointToString(ac->endTime)
     );

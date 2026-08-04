@@ -10,5 +10,8 @@ namespace chronos {
 	private:
 		void classifyByWindows(Activity& ac);
 		void classifyByProcess(Activity& ac);
+
+	private:
+		IActivityStorage& m_storage;
 	};
 }

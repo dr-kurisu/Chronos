@@ -2,7 +2,6 @@
 #include <unordered_map>
 #include <Core/Base.h>
 #include <Activity/Activity.h>
-#include <Activity/ActivityTag.h>
 
 namespace chronos 
 {
@@ -18,7 +17,7 @@ namespace chronos
 
         std::string text;
 
-        std::unordered_map<ActivityTags, TagStatistics> tagStatistics;
+        std::unordered_map<TagId, TagStatistics> tagStatistics;
         std::unordered_map<std::string, TagStatistics> applicationStatistics;
     };
 }

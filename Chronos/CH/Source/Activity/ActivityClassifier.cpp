@@ -1,9 +1,10 @@
 #include <Activity/ActivityClassifier.h>
 #include <Activity/Activity.h>
-#include <Activity/ActivityTag.h>
+#include <Storage/ITagStorage.h>
+#include <Tag/BuildinTags.h>
 
 chronos::ActivityClassifier::ActivityClassifier(const ActivityClassifierDesc& desc) :
-	Base(desc.base)
+	Base(desc.base), m_storage(desc.storage)
 {
 }
 
@@ -35,6 +36,7 @@ void chronos::ActivityClassifier::classifyByProcess(Activity& ac)
 
 	if (process == "explorer.exe")
 	{
+		
 		addTag(ac.tags, ActivityTags::FileManager);
 	}
 	else if (process == "chrome.exe" ||

@@ -9,9 +9,9 @@ SQLiteUserStorage::SQLiteUserStorage(const SQLiteStorageDesc& desc):
 {
     if (!createTable())
     {
-        ChronosLogError("Failed to create ACSQLite tables.");
+        ChronosLogError("Failed to create UserSQLite tables.");
     }
-    ChronosLogInfo("ACDatabase initialised");
+    ChronosLogInfo("UserDatabase initialised");
 }
 
 SQLiteUserStorage::~SQLiteUserStorage()
