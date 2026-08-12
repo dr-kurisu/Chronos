@@ -23,7 +23,7 @@ sqlite3* SQLiteDatabase::handle() const
     return m_db;
 }
 
-sqlite3* SQLiteDatabase::connection()
+void SQLiteDatabase::connection()
 {
     const int result = sqlite3_open(storagePath.string().c_str(), &m_db);
     // Fail to open
@@ -42,7 +42,6 @@ sqlite3* SQLiteDatabase::connection()
             "Failed to open SQLite database: " + error);
     }
     configureDatabase();
-    ChronosLogInfo("SQLiteDatabase initialised.");
 }
 
 void chronos::SQLiteDatabase::configureDatabase()

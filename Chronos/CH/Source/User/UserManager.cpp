@@ -10,7 +10,10 @@ using namespace chronos;
 UserManager::UserManager(const UserManagerDesc& desc) : m_storage(desc.storage), Base(desc.base)
 {
 	// Create TestUser
-	registerUser("TestUser", "TestPassword");
+	if (!m_storage.findUserByName("TestUser").has_value()) 
+	{
+		registerUser("TestUser", "TestPassword");
+	}
 }
 
 bool UserManager::registerUser(const std::string& username, const std::string& password)
@@ -21,9 +24,19 @@ bool UserManager::registerUser(const std::string& username, const std::string& p
 		ChronosLogWarning("Fail to register User due to invalid username or password");
 		return false;
 	}
+	if (m_storage.findUserByName(username))
+	{
+		ChronosLogWarning("Username already exists.");
+		return false;
+	}
 	User newUser;
 	newUser.name = username;
 	newUser.passwordHash = hashPassword(password);
+	if (!newUser.isValid()) 
+	{
+		ChronosLogWarning("Invalid user.");
+		return false;
+	}
 	newUser.id = m_storage.createUser(newUser);
 	return newUser.id >= 0;
 }

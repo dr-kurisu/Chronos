@@ -14,7 +14,7 @@ namespace chronos
         ~SQLiteDatabase();
 
         sqlite3* handle() const;
-        sqlite3* connection();
+        void connection();
         void configureDatabase();
         bool execute(std::string_view sql);
         bool execute(Statement& stmt);

@@ -11,7 +11,6 @@ SQLiteUserStorage::SQLiteUserStorage(const SQLiteStorageDesc& desc):
     {
         ChronosLogError("Failed to create UserSQLite tables.");
     }
-    ChronosLogInfo("UserDatabase initialised");
 }
 
 SQLiteUserStorage::~SQLiteUserStorage()
@@ -20,18 +19,6 @@ SQLiteUserStorage::~SQLiteUserStorage()
 
 UserId SQLiteUserStorage::createUser(const User& user)
 {
-    std::optional<User> existUser = findUserByName(user.name);
-    if (existUser)
-    {
-        ChronosLogWarning("Username: {} already exist", existUser->name);
-        return -1;
-    }
-    if (!user.isValid())
-    {
-        ChronosLogWarning("Failed to createUser with Invalid user.");
-        return -1;
-    }
-
     constexpr std::string_view sql = R"(
         INSERT INTO Users
         (

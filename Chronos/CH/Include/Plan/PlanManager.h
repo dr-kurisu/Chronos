@@ -8,13 +8,15 @@ namespace chronos
 	class PlanManager : public Base
 	{
 	public:
-		PlanManager(const PlanManagerDesc& desc);
-		bool CreatePlan();
-		bool UpdatePlan();
-		bool DeletePlan();
-		std::vector<Plan> GetCurrentUserPlans(UserId userId);
+		PlanManager(const PlanManagerDesc&);
+		bool CreatePlan(Plan);
+		bool UpdatePlan(Plan);
+		bool removePlan(PlanId);
+		void setCurrentUserId(UserId);
+		std::vector<Plan> GetAllCurrentUserPlans();
 	private:
-		IActivityStorage& m_storage;
+		IPlanStorage& m_storage;
+		UserId m_currentUserId = -1;
 	};
 }
 

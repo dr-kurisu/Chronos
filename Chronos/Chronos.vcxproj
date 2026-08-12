@@ -29,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="CH\Include\Analytics\ActivitySummary.h" />
     <ClInclude Include="CH\Include\Activity\ActivityClassifier.h" />
+    <ClInclude Include="CH\Include\Core\Rect.h" />
     <ClInclude Include="CH\Include\Tag\Tag.h" />
     <ClInclude Include="CH\Include\Activity\ActivityUtils.h" />
     <ClInclude Include="CH\Include\Storage\ITagStorage.h" />
@@ -50,12 +51,14 @@
     <ClInclude Include="CH\Include\Monitor\Windows\WindowsWatcher.h" />
     <ClInclude Include="CH\Include\Monitor\Monitor.h" />
     <ClInclude Include="CH\Include\Core\StringEncoding.h" />
-    <ClInclude Include="CH\Include\Storage\IPlanStorager.h" />
+    <ClInclude Include="CH\Include\Storage\IPlanStorage.h" />
     <ClInclude Include="CH\Include\Plan\Plan.h" />
     <ClInclude Include="CH\Include\Storage\SQLitePlanStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteUserStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteTagStorage.h" />
     <ClInclude Include="CH\Include\User\User.h" />
+    <ClInclude Include="CH\Include\WebView\WebViewController.h" />
+    <ClInclude Include="CH\Include\Window\Window.h" />
     <ClInclude Include="CH\ThirdParty\argon2\include\argon2.h" />
     <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2-impl.h" />
     <ClInclude Include="CH\ThirdParty\argon2\src\blake2\blake2.h" />
@@ -69,8 +72,10 @@
     <ClInclude Include="CH\Include\User\UserManager.h" />
     <ClInclude Include="CH\Include\Plan\PlanManager.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteDatabase.h" />
+    <ClInclude Include="CH\Include\Tag\TagManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CH\Source\Window\Window.cpp" />
     <ClCompile Include="CH\Source\Storage\SQLiteTagStorage.cpp" />
     <ClCompile Include="CH\Include\Tag\BuildinTags.h" />
     <ClCompile Include="CH\Source\Storage\SQLitePlanStorage.cpp" />
@@ -97,6 +102,7 @@
     <ClCompile Include="CH\Source\Core\Logger.cpp" />
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
     <ClCompile Include="CH\Source\Monitor\Monitor.cpp" />
+    <ClCompile Include="CH\Source\WebView\WebViewController.cpp" />
     <ClCompile Include="CH\Test\SQLiteTagStorageTest.cpp" />
     <ClCompile Include="CH\Test\SQLiteUserStorageTest.cpp" />
     <ClCompile Include="CH\Test\UserManagerTest.cpp" />
@@ -112,6 +118,10 @@
     <ClCompile Include="CH\Source\User\UserManager.cpp" />
     <ClCompile Include="CH\Source\Plan\PlanManager.cpp" />
     <ClCompile Include="CH\Source\Core\SQLiteDatabase.cpp" />
+    <ClCompile Include="CH\Source\Tag\TagManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -262,5 +272,13 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\native\Microsoft.Web.WebView2.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.4129.50\build\native\Microsoft.Web.WebView2.targets'))" />
+  </Target>
 </Project>

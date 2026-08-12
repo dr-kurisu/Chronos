@@ -1,11 +1,10 @@
 #include <Activity/ActivityClassifier.h>
 #include <Activity/Activity.h>
-#include <Storage/IActivityStorage.h>
-#include <Storage/ITagStorage.h>
 #include <Tag/Tag.h>
+#include <ranges>
 
 chronos::ActivityClassifier::ActivityClassifier(const ActivityClassifierDesc& desc) :
-	Base(desc.base), m_storage(desc.storage)
+	Base(desc.base)
 {
 }
 
@@ -17,17 +16,17 @@ void chronos::ActivityClassifier::classify(Activity& ac)
 
 void chronos::ActivityClassifier::classifyByWindows(Activity& ac)
 {
-	// Only classify browser windows for now.
-	if (!m_storage.hasTag(ac.id, BuiltinTagId::Browser)) return;
+	// Only classify browser windows for now. (without ac id here)
+	if (!ac.hasTag(BuiltinTagId::Browser)) return;
 
 	const auto& title = ac.window.title;
 	if (title.find("GitHub") != std::string::npos)
 	{
-		m_storage.addTags(ac.id, { BuiltinTagId::Code });
+		ac.addTag(BuiltinTagId::Code);
 	}
 	else if (title.find("YouTube") != std::string::npos)
 	{
-		m_storage.addTags(ac.id, { BuiltinTagId::Video });
+		ac.addTag(BuiltinTagId::Video);
 	}
 }
 
@@ -37,16 +36,16 @@ void chronos::ActivityClassifier::classifyByProcess(Activity& ac)
 
 	if (process == "explorer.exe")
 	{
-		m_storage.addTags(ac.id, { BuiltinTagId::FileManager });
+		ac.addTag(BuiltinTagId::FileManager);
 	}
 	else if (process == "chrome.exe" ||
 		process == "firefox.exe")
 	{
-		m_storage.addTags(ac.id, { BuiltinTagId::Browser });
+		ac.addTag(BuiltinTagId::Browser);
 	}
 	else if (process == "WindowsTerminal.exe")
 	{
-		m_storage.addTags(ac.id, { BuiltinTagId::Terminal });
+		ac.addTag(BuiltinTagId::Terminal);
 	}
 }
 

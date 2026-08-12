@@ -1,34 +1,42 @@
 #pragma once
 #include <Core/Core.h>
 #include <Core/Logger.h>
+#include <Core/Rect.h>
+
 #include <filesystem>
 #include <chrono>
 
+
 namespace chronos {
-	struct BaseDesc {
+	struct BaseDesc
+	{
 		Logger& logger;
 	};
 
-	struct ApplicationDesc {
+	struct ApplicationDesc
+	{
 		Logger::LogLevel level;
 		std::filesystem::path storagePath = "";
 	};
 
-	struct WindowsWatcherDesc {
+	struct WindowsWatcherDesc
+	{
 		BaseDesc base;
 		float duration;
 	};
 
-	struct MonitorDesc {
+	struct MonitorDesc
+	{
 		BaseDesc base;
 	};
 
-	struct ActivityClassifierDesc {
+	struct ActivityClassifierDesc
+	{
 		BaseDesc base;
-		IActivityStorage& storage;
 	};
 
-	struct ActivityManagerDesc {
+	struct ActivityManagerDesc
+	{
 		BaseDesc base;
 		bool enableStorage = true;
 		bool captureWindowTitle = true;
@@ -38,30 +46,47 @@ namespace chronos {
 		IActivityStorage& storage;
 	};
 
-	struct SQLiteStorageDesc {
+	struct SQLiteStorageDesc
+	{
 		BaseDesc base;
 		SQLiteDatabase& db;
 	};
 
-	struct SQLiteDatabaseDesc {
+	struct SQLiteDatabaseDesc
+	{
 		BaseDesc base;
 		std::filesystem::path storagePath = "";
 	};
 
-	struct UserManagerDesc {
+	struct UserManagerDesc
+	{
 		BaseDesc base;
 		IUserStorage& storage;
 	};
 
-	struct ActivitySummaryDesc {
+	struct TagManagerDesc
+	{
+		BaseDesc base;
+		ITagStorage& storage;
+	};
+
+	struct ActivitySummaryDesc
+	{
 		BaseDesc base;
 		IActivityStorage& acStorage;
 		ITagStorage& tagStorage;
 		ISummaryGenerator& generator;
 	};
 
-	struct PlanManagerDesc {
+	struct PlanManagerDesc
+	{
 		BaseDesc base;
-		IActivityStorage& storage;
+		IPlanStorage& storage;
+	};
+
+	struct WindowDesc
+	{
+		BaseDesc base;
+		Rect size;
 	};
 };

@@ -5,6 +5,7 @@
 int main() {
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
+	SetProcessDPIAware();
 
 	try{
 		chronos::Application application({ chronos::Logger::LogLevel::Info, "CH/Data/chronos.db"});

@@ -21,7 +21,6 @@ namespace chronos {
 	class Logger;
 	class WindowsWatcher;
 	class Monitor;
-	class ActivityManager;
 	class ActivityClassifier;
 	class Statement;
 	class IActivityStorage;
@@ -29,15 +28,28 @@ namespace chronos {
 	class IPlanStorage;
 	class IUserStorage;
 	class ITagStorage;
-	class UserManager;
 	class ActivitySummary;
-	class PlanManager;
 	class SQLiteDatabase;
+
+	class UserManager;
+	class ActivityManager;
+	class TagManager;
+	class PlanManager;
+	class WebViewController;
+	class Window;
+	class Rect;
+
 
 	struct Activity;
 	struct Plan;
 	struct WindowInfo;
 	struct Tag;
+
+
+	using i32 = int;
+	using ui32 = unsigned int;
+	using f32 = float;
+	using d64 = double;
 
 	template <typename T> using UniquePtr = std::unique_ptr<T>;
 	template <typename T> using RefPtr = std::shared_ptr<T>;

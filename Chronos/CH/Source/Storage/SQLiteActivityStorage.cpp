@@ -18,7 +18,6 @@ SQLiteActivityStorage::SQLiteActivityStorage(const SQLiteStorageDesc& desc):
     {
         ChronosLogError("Failed to create ACSQLite tables.");
     }
-    ChronosLogInfo("ACDatabase initialised");
 }
 
 SQLiteActivityStorage::~SQLiteActivityStorage()
@@ -40,7 +39,7 @@ ActivityId SQLiteActivityStorage::insertActivity(const Activity& activity)
             StartTime,
             EndTime,
             ProcessName,
-            WindowTitle,
+            WindowTitle
         )
         VALUES
         (?, ?, ?, ?, ?);
@@ -105,8 +104,6 @@ bool SQLiteActivityStorage::updateActivity(const Activity& activity)
     return true;
 }
 
-
-
 bool SQLiteActivityStorage::removeActivity(ActivityId id)
 {
     // Check id
@@ -134,12 +131,6 @@ bool SQLiteActivityStorage::removeActivity(ActivityId id)
 
 bool SQLiteActivityStorage::addTags(ActivityId activityId, std::span<const TagId> tagIds)
 {
-    // Check params
-    if (activityId < 0 || tagIds.empty()) 
-    {
-        ChronosLogWarning("Failed to addTags with invalid params");
-        return false;
-    }
     constexpr std::string_view sql = R"(
         INSERT INTO ActivityTags
         (
@@ -264,12 +255,6 @@ std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Times
 
 bool SQLiteActivityStorage::hasTag(ActivityId id, TagId tagId)
 {
-    // Check ids
-    if (id < 0 || tagId < 0) 
-    {
-        ChronosLogWarning("Failed to hasTag with invalid params");
-        return false;
-    }
     constexpr std::string_view sql = R"(
         SELECT 1
         FROM ActivityTags
@@ -324,7 +309,7 @@ bool SQLiteActivityStorage::createTable()
             EndTime      INTEGER NOT NULL,
             ProcessName  TEXT NOT NULL,
             WindowTitle  TEXT NOT NULL,
-            FOREIGN KEY(UserId) REFERENCES Users(Id)
+            FOREIGN KEY(UserId) REFERENCES Users(Id) ON DELETE CASCADE
         );
     )");
 

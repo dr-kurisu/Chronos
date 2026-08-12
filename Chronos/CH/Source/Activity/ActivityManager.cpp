@@ -7,7 +7,7 @@
 chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): 
 	Base(desc.base), minDuration(desc.minDuration), m_storage(desc.storage)
 {
-    m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base, m_storage });
+    m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base });
 }
 
 chronos::ActivityManager::~ActivityManager()
@@ -19,6 +19,7 @@ void chronos::ActivityManager::createCurrentActivity(const WindowInfo& info)
 	Activity ac{info};
     ac.userId = m_currentUserId;
 	m_activities.push_back(ac);
+    if (m_activities.size() > 100) m_activities.pop_front();
 }
 
 void chronos::ActivityManager::endCurrentActivity()
@@ -55,7 +56,7 @@ void chronos::ActivityManager::printCurrentActivity()
         ac->window.pid,
         ac->window.title,
         ac->window.processName,
-        ActivityUtils::vectorToString(ac->tagIds),
+        ActivityUtils::tagIdsToString(ac->tagIds, m_tagMap),
         ActivityUtils::timePointToString(ac->startTime),
         ActivityUtils::timePointToString(ac->endTime)
     );
@@ -84,14 +85,17 @@ void chronos::ActivityManager::onWindowChanged(const WindowInfo& info)
 
     // duration check
     if (ac->duration() < minDuration) {
-        // ChronosLogInfo("Duration is less than {}.", minDuration);
         createCurrentActivity(info);
+
         return;
     }
 
     // Classification
     classifyCurrentActivity();
-
+    // Storage
+    const Activity& activity = m_activities.back();
+    ActivityId id = m_storage.insertActivity(activity);
+    m_storage.addTags(id, activity.tagIds);
     printCurrentActivity();
     createCurrentActivity(info);
 }
@@ -104,6 +108,12 @@ void chronos::ActivityManager::setCurrentUserId(UserId userId) noexcept
         return;
     }
     m_currentUserId = userId;
+}
+
+void chronos::ActivityManager::updateTagMap(std::unordered_map<TagId, Tag> map)
+{
+    // Pass by value
+    m_tagMap = map;
 }
 
 

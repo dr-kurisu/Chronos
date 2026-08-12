@@ -1,7 +1,9 @@
 #pragma once
 
-#include <string>
 #include <Activity/Activity.h>
+#include <string>
+#include <unordered_map>
+
 
 namespace chronos
 {
@@ -28,6 +30,32 @@ namespace chronos
 
             result += "]";
 
+            return result;
+        }
+
+        static std::string tagIdsToString(
+            const std::vector<TagId>& tagIds,
+            const std::unordered_map<TagId, Tag>& tagMap)
+        {
+            std::string result{ "[" };
+
+            for (size_t i = 0; i < tagIds.size(); ++i)
+            {
+                if (i != 0)
+                    result += ", ";
+
+                auto it = tagMap.find(tagIds[i]);
+
+                if (it != tagMap.end())
+                {
+                    result += it->second.name;
+                }
+                else
+                {
+                    result += "Unknown";
+                }
+            }
+            result += "]";
             return result;
         }
     };

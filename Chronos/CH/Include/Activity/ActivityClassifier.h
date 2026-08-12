@@ -12,6 +12,5 @@ namespace chronos {
 		void classifyByProcess(Activity& ac);
 
 	private:
-		IActivityStorage& m_storage;
 	};
 }

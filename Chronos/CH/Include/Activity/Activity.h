@@ -4,6 +4,7 @@
 #include <chrono>
 #include <Core/Core.h>
 #include <User/User.h>
+#include <ranges>
 #include <Tag/Tag.h>
 
 namespace chronos {
@@ -42,6 +43,19 @@ namespace chronos {
             startTime(std::chrono::system_clock::now()),
             endTime(startTime)
         {
+        }
+
+        bool hasTag(TagId tag) 
+        {
+            return std::ranges::find(tagIds, tag) != tagIds.end();
+        }
+
+        void addTag(TagId tag)
+        {
+            if (!hasTag(tag))
+            {
+                tagIds.emplace_back(tag);
+            }
         }
 
         void finish()

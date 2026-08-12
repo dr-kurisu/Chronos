@@ -36,13 +36,17 @@
     <ClInclude Include="CH\Include\Core\All.h" />
     <ClInclude Include="CH\Include\Plan\Plan.h" />
     <ClInclude Include="CH\Include\Plan\PlanManager.h" />
-    <ClInclude Include="CH\Include\Storage\IPlanStorager.h" />
+    <ClInclude Include="CH\Include\Storage\IPlanStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLitePlanStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteDatabase.h" />
     <ClInclude Include="CH\Include\Storage\IUserStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteUserStorage.h" />
     <ClInclude Include="CH\Include\Storage\SQLiteTagStorage.h" />
     <ClInclude Include="CH\Include\Storage\ITagStorage.h" />
+    <ClInclude Include="CH\Include\Tag\TagManager.h" />
+    <ClInclude Include="CH\Include\WebView\WebViewController.h" />
+    <ClInclude Include="CH\Include\Window\Window.h" />
+    <ClInclude Include="CH\Include\Core\Rect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CH\Source\Monitor\Windows\WindowsWatcher.cpp" />
@@ -78,5 +82,11 @@
     <ClCompile Include="CH\Source\Storage\SQLiteTagStorage.cpp" />
     <ClCompile Include="CH\Test\SQLiteTagStorageTest.cpp" />
     <ClCompile Include="CH\Include\Tag\BuildinTags.h" />
+    <ClCompile Include="CH\Source\Tag\TagManager.cpp" />
+    <ClCompile Include="CH\Source\WebView\WebViewController.cpp" />
+    <ClCompile Include="CH\Source\Window\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

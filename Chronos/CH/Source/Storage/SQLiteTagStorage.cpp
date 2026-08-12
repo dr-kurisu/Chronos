@@ -11,18 +11,10 @@ SQLiteTagStorage::SQLiteTagStorage(const SQLiteStorageDesc& desc):
 	{
 		ChronosLogError("Failed to create PlanSQLite tables.");
 	}
-	ChronosLogInfo("TagDatabase initialised");
 }
 
 TagId SQLiteTagStorage::createTag(UserId userId, const Tag& tag)
 {
-	// check params
-	if (!tag.isValid()) 
-	{
-		ChronosLogWarning("Fail to insert invalid tag.");
-		return -1;
-	}
-
 	constexpr std::string_view sql = R"(
 		INSERT INTO Tags
 		(
