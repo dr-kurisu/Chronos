@@ -1,7 +1,18 @@
 .vs/
 
-Chronos/Bin/
+# CMake / Visual Studio build output and local cache
+/out/
+/Debug/
+Chronos/Debug/
 Chronos/Intermediate/
+CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+*.module.json
+
+Chronos/Bin/
 Chronos/CH/ThirdParty/
 Chronos/CH/UI/node_modules/
 Chronos/CH/UI/dist/

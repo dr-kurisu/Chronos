@@ -14,7 +14,7 @@ namespace chronos
     {
         Timestamp begin;
         Timestamp end;
-
+        
         std::string text;
 
         std::unordered_map<TagId, TagStatistics> tagStatistics;

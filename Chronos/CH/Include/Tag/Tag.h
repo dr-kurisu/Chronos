@@ -29,5 +29,6 @@ namespace chronos {
         inline constexpr TagId Game = 8;
         inline constexpr TagId Terminal = 9;
         inline constexpr TagId FileManager = 10;
+        inline constexpr TagId Idle = 11;
     }
 }

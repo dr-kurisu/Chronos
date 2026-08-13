@@ -25,6 +25,11 @@ sqlite3* SQLiteDatabase::handle() const
 
 void SQLiteDatabase::connection()
 {
+    //ChronosLogInfo("Working directory: {}",
+    //    std::filesystem::current_path().string());
+
+    //ChronosLogInfo("Database path: {}",
+    //    storagePath.string());
     const int result = sqlite3_open(storagePath.string().c_str(), &m_db);
     // Fail to open
     if (result != SQLITE_OK)

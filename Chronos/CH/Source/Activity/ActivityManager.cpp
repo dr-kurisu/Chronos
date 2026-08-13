@@ -86,7 +86,6 @@ void chronos::ActivityManager::onWindowChanged(const WindowInfo& info)
     // duration check
     if (ac->duration() < minDuration) {
         createCurrentActivity(info);
-
         return;
     }
 

@@ -7,7 +7,10 @@
 #include <ranges>
 #include <Tag/Tag.h>
 
+
 namespace chronos {
+    using TimePoint = std::chrono::system_clock::time_point;
+
     struct WindowInfo
     {
         HWND hwnd{};

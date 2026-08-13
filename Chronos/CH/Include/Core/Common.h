@@ -89,4 +89,10 @@ namespace chronos {
 		BaseDesc base;
 		Rect size;
 	};
+
+	struct ActivityControllerDesc
+	{
+		BaseDesc base;
+		ActivitySummary& summary;
+	};
 };

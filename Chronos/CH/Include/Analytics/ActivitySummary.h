@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/Core.h>
 #include <Analytics/Summary.h>
 #include <Analytics/ISummaryGenerator.h>
 
@@ -9,16 +10,19 @@ namespace chronos
 	{
 	public:
 		ActivitySummary(const ActivitySummaryDesc& desc);
-        Summary generate(const std::vector<Activity>& activities);
+        Summary generate(Timestamp begin, Timestamp end);
+		std::chrono::seconds calculateTotalDuration(Timestamp begin, Timestamp end);
+		void setCurrentUserId(UserId);
 
     private:
-        void calculateTagStatistics(Summary& summary, const std::vector<Activity>& activities);
-        void calculateApplicationStatistics(Summary& summary, const std::vector<Activity>& activities);
+        void calculateTagStatistics(Summary&, const std::vector<Activity>&);
+        void calculateApplicationStatistics(Summary&, const std::vector<Activity>&);
 
 	private:
 		ISummaryGenerator& m_generator;
 		IActivityStorage& m_acStorage;
 		ITagStorage& m_tagStorage;
+		UserId m_currentUserId = -1;
 	};
 }
 

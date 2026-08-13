@@ -65,7 +65,7 @@ void chronos::Application::initialiseWebView(const ApplicationDesc& desc)
 		ChronosLogError("Failed to initialise WebView2.");
 	}
 }
-
+	
 void chronos::Application::createWindow(const ApplicationDesc& desc)
 {
 	WindowDesc windowDesc{ *m_logger, {1800, 1020} };
