@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Activity\ActivityClassifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Activity\ActivityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Activity\ActivityUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Analytics\ActivitySummary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Api\ActivityController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Application\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Application\Win32\Win32Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Core\Base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Core\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Core\SQLiteDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Core\StringEncoding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Monitor\Monitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Monitor\Windows\WindowsWatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Plan\PlanManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Storage\SQLiteActivityStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Storage\SQLitePlanStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Storage\SQLiteTagStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Storage\SQLiteUserStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Tag\TagManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\User\UserManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\WebView\WebViewController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Source\Window\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{304BE327-33B6-3354-B4B8-70D4BF5618EA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

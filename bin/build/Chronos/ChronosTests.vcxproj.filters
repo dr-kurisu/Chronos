@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\App\TestMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Test\SQLiteActivityStorageTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Test\SQLiteTagStorageTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Test\SQLiteUserStorageTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CH\Test\UserManagerTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Steins Gate\source\repos\Chronos\Chronos\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{304BE327-33B6-3354-B4B8-70D4BF5618EA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

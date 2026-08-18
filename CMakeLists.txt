@@ -1,7 +1,4 @@
 cmake_minimum_required(VERSION 3.20)
-set(CMAKE_TOOLCHAIN_FILE
-    "C:/Users/24156/vcpkg/scripts/buildsystems/vcpkg.cmake"
-    CACHE STRING "Vcpkg toolchain file")
 
 project(Chronos LANGUAGES C CXX)
 include(CTest)
