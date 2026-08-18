@@ -1,5 +1,0 @@
-if(EXISTS "C:/Users/Steins Gate/source/repos/Chronos/bin/build/Chronos/ChronosTests[1]_tests.cmake")
-  include("C:/Users/Steins Gate/source/repos/Chronos/bin/build/Chronos/ChronosTests[1]_tests.cmake")
-else()
-  add_test(ChronosTests_NOT_BUILT ChronosTests_NOT_BUILT)
-endif()
