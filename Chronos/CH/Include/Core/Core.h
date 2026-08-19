@@ -18,6 +18,7 @@ namespace chronos {
 	using TagId = int;
 	using PlanId = std::int64_t;
 
+	class Application;
 	class Logger;
 	class WindowsWatcher;
 	class Monitor;

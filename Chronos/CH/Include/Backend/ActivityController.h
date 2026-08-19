@@ -14,6 +14,9 @@ namespace chronos
 		void registerRoutes(crow::App<CorsMiddleware>& app);
 
 	private:
+		crow::response getRecentActiveTime(const crow::request& req);
+
+	private:
 		ActivitySummary& m_summary;
 		ActivityManager& m_acManager;
 	};

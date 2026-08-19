@@ -2,7 +2,7 @@
 
 void chronos::Application::run() {
     // Login default account
-    login();
+    login("TestUser", "TestPassword");
     // Get current AC
     m_acManager->createCurrentActivity(m_monitor->getCurrentForeground());
     ChronosLogInfo("Chronos Lanuched");

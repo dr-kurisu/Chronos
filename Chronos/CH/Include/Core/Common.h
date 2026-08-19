@@ -109,6 +109,7 @@ namespace chronos {
 	struct UserControllerDesc 
 	{
 		BaseDesc base;
+		Application& application;
 		UserManager& userManager;
 	};
 };

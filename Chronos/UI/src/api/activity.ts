@@ -1,10 +1,13 @@
+import { apiFetch } from "./client";
+
+
 export interface ActiveTimeResponse {
     duration: number;
 }
 
 export async function fetchActiveTime(): Promise<number> {
-    const response = await fetch(
-        "http://localhost:18080/api/activity/activetime"
+    const response = await apiFetch(
+        "/api/activity/activetime"
     );
 
     if (!response.ok) {

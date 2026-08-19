@@ -6,6 +6,11 @@ import {
     Sprout,
 } from "lucide-react";
 
+import { User } from "../../types/User";
+import { fetchCurrentUser } from "../../api/user";
+import { useState, useEffect } from "react";
+import "./Sidebar.css";
+
 
 const menuItems = [
     {
@@ -35,45 +40,39 @@ const menuItems = [
     },
 ];
 
+export function useCurrentUser() {
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchCurrentUser()
+            .then(setUser)
+            .finally(() => setLoading(false));
+    }, []);
+
+    return {
+        user,
+        loading,
+    };
+}
+
 
 export default function Sidebar() {
+    const { user, loading } = useCurrentUser();
+
     return (
-        <aside
-            className="
-                h-screen
-                w-64
-                border-r
-                bg-white
-                px-4
-                py-6
-            "
-        >
-            {/* Logo */}
-            <div className="mb-8 flex items-center gap-3 px-3">
-                <div
-                    className="
-                        flex
-                        h-10
-                        w-10
-                        items-center
-                        justify-center
-                        rounded-xl
-                        bg-blue-500
-                        text-white
-                        font-bold
-                    "
-                >
+        <aside className="sidebar">
+            <div className="sidebar-logo">
+                <div className="sidebar-logo-icon">
                     C
                 </div>
 
-                <span className="text-xl font-semibold">
+                <span className="sidebar-logo-text">
                     Chronos
                 </span>
             </div>
 
-
-            {/* Menu */}
-            <nav className="space-y-2">
+            <nav className="sidebar-menu">
                 {menuItems.map((item) => {
                     const Icon = item.icon;
 
@@ -81,26 +80,38 @@ export default function Sidebar() {
                         <a
                             key={item.name}
                             href={item.path}
-                            className="
-                                flex
-                                items-center
-                                gap-3
-                                rounded-lg
-                                px-3
-                                py-2
-                                text-gray-600
-                                hover:bg-gray-100
-                            "
+                            className="sidebar-menu-item"
                         >
-                            <Icon size={20}/>
-
-                            <span>
-                                {item.name}
-                            </span>
+                            <Icon size={20} />
+                            <span>{item.name}</span>
                         </a>
                     );
                 })}
             </nav>
+
+            <div className="sidebar-user">
+                <div className="sidebar-user-avatar">
+                    {user?.name?.charAt(0).toUpperCase() ?? "?"}
+                </div>
+
+                <div className="sidebar-user-info">
+                    {loading ? (
+                        <span className="sidebar-user-loading">
+                            Loading...
+                        </span>
+                    ) : (
+                        <>
+                            <span className="sidebar-user-name">
+                                {user?.name ?? "Unknown User"}
+                            </span>
+
+                            <span className="sidebar-user-id">
+                                ID: {user?.id}
+                            </span>
+                        </>
+                    )}
+                </div>
+            </div>
         </aside>
     );
 }

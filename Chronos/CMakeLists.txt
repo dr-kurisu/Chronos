@@ -47,6 +47,7 @@ set(CHRONOS_CORE_SOURCES
     CH/Source/WebView/WebViewController.cpp
     CH/Source/Window/Window.cpp
     CH/Source/Backend/ActivityController.cpp
+    CH/Source/Backend/UserController.cpp
 )
 
 
@@ -63,9 +64,11 @@ target_compile_definitions(chronos_core PUBLIC
     WIN32_LEAN_AND_MEAN
     UNICODE
     _UNICODE
+    _WIN32_WINNT=0x0A00
 )
 
 target_compile_options(chronos_core PUBLIC
+    $<$<CXX_COMPILER_ID:MSVC>:/MP>
     $<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>
 )
 

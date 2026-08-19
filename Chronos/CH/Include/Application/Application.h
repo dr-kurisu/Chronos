@@ -11,9 +11,11 @@ namespace chronos {
 		~Application();
 		Logger& getLogger() noexcept;
 		void run();
+		bool login(const std::string& username, const std::string& password);
+		void logout();
 
 	private:
-		void login();
+		
 		void initialiseLogger(const ApplicationDesc& desc);
 		void initialiseDatabase(const ApplicationDesc& desc);
 		void initialiseWebView(const ApplicationDesc& desc);

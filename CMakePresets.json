@@ -7,7 +7,7 @@
       "generator": "Visual Studio 18 2026",
       "architecture": "x64",
       "binaryDir": "${sourceDir}/bin/build",
-      "toolchainFile": "D:/Coding/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "toolchainFile": "C:/Users/24156/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
         "CMAKE_CXX_STANDARD": "20",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
