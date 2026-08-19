@@ -1,16 +1,21 @@
 #include <Core/All.h>
 
-
 chronos::Application::Application(const ApplicationDesc& desc)
 {
 	initialiseLogger(desc);
 	initialiseDatabase(desc);
-	createWindow(desc);
-	initialiseWebView(desc);
+
+	if (desc.display) 
+	{
+		createWindow(desc);
+		initialiseWebView(desc);
+	}
+
 	createStorages();
 	createManagers();
 	createMonitor();
 	createActivitySummary();
+	createBackend();
 }
 
 chronos::Application::~Application()
@@ -33,7 +38,7 @@ void chronos::Application::login()
 	}
 	m_acManager->setCurrentUserId(m_userManager->getCurrentUserId());
 	m_tagManager->setCurrentUserId(m_userManager->getCurrentUserId());
-
+	m_acSummary->setCurrentUserId(m_userManager->getCurrentUserId());
 	// create builtin tags
 	m_tagManager->ensureBuiltinTags();
 	m_tagManager->updateTagMap();
@@ -122,4 +127,15 @@ void chronos::Application::createActivitySummary()
 		*m_logger, *m_acStorage, *m_tagStorage, *m_summaryGenerator 
 		});
 	ChronosLogInfo("Activity summary service initialised.");
+}
+
+void chronos::Application::createBackend()
+{
+	m_activityController = std::make_unique<ActivityController>(ActivityControllerDesc{ *m_logger, *m_acSummary, *m_acManager });
+	m_backend = std::make_unique<Backend>(BackendDesc{
+		*m_logger, 
+		*m_activityController, 
+		*m_userController,
+		18080 
+	});
 }

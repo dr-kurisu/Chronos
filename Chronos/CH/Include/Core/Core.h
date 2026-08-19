@@ -38,6 +38,9 @@ namespace chronos {
 	class WebViewController;
 	class Window;
 	class Rect;
+	class Backend;
+	class ActivityController;
+	class UserController;
 
 
 	struct Activity;

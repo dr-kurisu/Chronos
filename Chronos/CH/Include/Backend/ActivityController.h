@@ -2,16 +2,19 @@
 
 #include <Core/Core.h>
 #include <Core/Base.h>
+#include <Backend/CorsMiddleware.h>
+#include <crow.h>
 
 namespace chronos 
 {
-	class ActivityController : public Base 
+	class ActivityController : public Base
 	{
 	public:
 		ActivityController(const ActivityControllerDesc& desc);
-		//Json::Value getTotalActiveTime(Timestamp begin, Timestamp end);
+		void registerRoutes(crow::App<CorsMiddleware>& app);
 
 	private:
 		ActivitySummary& m_summary;
+		ActivityManager& m_acManager;
 	};
 }

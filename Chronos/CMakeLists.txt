@@ -27,7 +27,6 @@ set(CHRONOS_CORE_SOURCES
     CH/Source/Activity/ActivityManager.cpp
     CH/Source/Activity/ActivityUtils.cpp
     CH/Source/Analytics/ActivitySummary.cpp
-    CH/Source/Api/ActivityController.cpp
     CH/Source/Application/Application.cpp
     CH/Source/Application/Win32/Win32Application.cpp
     CH/Source/Core/Base.cpp
@@ -43,8 +42,11 @@ set(CHRONOS_CORE_SOURCES
     CH/Source/Storage/SQLiteUserStorage.cpp
     CH/Source/Tag/TagManager.cpp
     CH/Source/User/UserManager.cpp
+    CH/Source/Window/Window.cpp
+    CH/Source/Backend/Backend.cpp
     CH/Source/WebView/WebViewController.cpp
     CH/Source/Window/Window.cpp
+    CH/Source/Backend/ActivityController.cpp
 )
 
 

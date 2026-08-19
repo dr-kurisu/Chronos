@@ -2,9 +2,19 @@ import StatCard from "../components/dashboard/StatCard";
 import ActivityBreakdown from "../components/dashboard/ActivityBreakdown";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import { ActivityTag } from "../types/ActivityTag";
+import { fetchActiveTime } from "../api/activity";
 
 import { Clock3, Activity, Target } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+
+function formatDuration(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+}
 
 
 interface DashboardStatistics {
@@ -80,11 +90,18 @@ const recentActivities = [
 export default function Dashboard() {
     const [activeIndex, setActiveIndex] = useState<number | undefined>();
     const [isReady, setIsReady] = useState(false);
+    const [activeTime, setActiveTime] = useState(0);
+
+    useEffect(() => {
+        fetchActiveTime()
+            .then(setActiveTime)
+            .catch(console.error);
+    }, []);
     return (
         <div className="grid grid-cols-3 gap-6">
             <StatCard
                 title="Active Time"
-                value={statistics.activeTime}
+                value={formatDuration(activeTime)}
                 icon={<Clock3 size={24} />}
                 trend={statistics.activeTimeTrend}
             />

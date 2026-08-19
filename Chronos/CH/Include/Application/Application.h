@@ -11,6 +11,7 @@ namespace chronos {
 		~Application();
 		Logger& getLogger() noexcept;
 		void run();
+
 	private:
 		void login();
 		void initialiseLogger(const ApplicationDesc& desc);
@@ -21,6 +22,7 @@ namespace chronos {
 		void createStorages();
 		void createMonitor();
 		void createActivitySummary();
+		void createBackend();
 
 	private:
 		UniquePtr<Logger> m_logger{};
@@ -39,6 +41,10 @@ namespace chronos {
 
 		UniquePtr<Window> m_window{};
 		UniquePtr<WebViewController> m_webView{};
+		UniquePtr<Backend> m_backend{};
+		UniquePtr<ActivityController> m_activityController{};
+		UniquePtr<UserController> m_userController{};
+
 		bool m_isRunning = true;
 	};
 }

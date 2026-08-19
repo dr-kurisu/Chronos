@@ -18,3 +18,6 @@
 #include <Analytics/ActivitySummary.h>
 #include <WebView/WebViewController.h>
 #include <Window/Window.h>
+#include <Backend/Backend.h>
+#include <Backend/ActivityController.h>
+#include <Backend/UserController.h>

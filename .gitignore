@@ -2,6 +2,7 @@
 
 # CMake / Visual Studio build output and local cache
 /bin/
+/out/
 /Debug/
 Chronos/Debug/
 Chronos/Intermediate/

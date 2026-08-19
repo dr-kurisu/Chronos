@@ -17,6 +17,7 @@ namespace chronos {
 	{
 		Logger::LogLevel level;
 		std::filesystem::path storagePath = "";
+		bool display = false;
 	};
 
 	struct WindowsWatcherDesc
@@ -90,9 +91,24 @@ namespace chronos {
 		Rect size;
 	};
 
+	struct BackendDesc
+	{
+		BaseDesc base;
+		ActivityController& acController;
+		UserController& userController;
+		uint16_t port;
+	};
+
 	struct ActivityControllerDesc
 	{
 		BaseDesc base;
 		ActivitySummary& summary;
+		ActivityManager& acManager;
+	};
+
+	struct UserControllerDesc 
+	{
+		BaseDesc base;
+		UserManager& userManager;
 	};
 };

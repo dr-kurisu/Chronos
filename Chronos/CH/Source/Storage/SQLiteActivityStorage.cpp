@@ -198,10 +198,10 @@ std::vector<Activity> SQLiteActivityStorage::findActivities(UserId userId, Times
             a.Id,
             a.UserId,
             a.ProcessName,
-            a.Title,
+            a.WindowTitle,
             a.StartTime,
             a.EndTime,
-            t.Id
+            t.TagId
         FROM Activities a
         LEFT JOIN ActivityTags t
         ON a.Id = t.ActivityId
