@@ -9,8 +9,8 @@ import {
 import { User } from "../../types/User";
 import { fetchCurrentUser } from "../../api/user";
 import { useState, useEffect } from "react";
-import "./Sidebar.css";
 
+import "./Sidebar.css";
 
 const menuItems = [
     {
@@ -40,14 +40,28 @@ const menuItems = [
     },
 ];
 
+const DEFAULT_USER: User = {
+    id: 99999999,
+    username: "default",
+    name: "Default",
+    createdTime: 0,
+};
+
 export function useCurrentUser() {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchCurrentUser()
-            .then(setUser)
-            .finally(() => setLoading(false));
+            .then((user) => {
+                setUser(user ?? DEFAULT_USER);
+            })
+            .catch(() => {
+                setUser(DEFAULT_USER);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     return {
@@ -55,7 +69,6 @@ export function useCurrentUser() {
         loading,
     };
 }
-
 
 export default function Sidebar() {
     const { user, loading } = useCurrentUser();
@@ -102,11 +115,11 @@ export default function Sidebar() {
                     ) : (
                         <>
                             <span className="sidebar-user-name">
-                                {user?.name ?? "Unknown User"}
+                                {user?.name ?? "Default"}
                             </span>
 
                             <span className="sidebar-user-id">
-                                ID: {user?.id}
+                                ID: {user?.id ?? 0}
                             </span>
                         </>
                     )}

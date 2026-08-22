@@ -23,8 +23,8 @@ namespace chronos
         std::unordered_map<TagId, Tag> getTagMap();
 
     private:
+        AuthContext& m_authContext;
         std::unordered_map<TagId, Tag> m_tagMap;
         ITagStorage& m_storage;
-        UserId m_currentUserId = -1;
     };
 }

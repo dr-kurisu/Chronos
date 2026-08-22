@@ -1,9 +1,16 @@
 #include <Backend/Backend.h>
 #include <Backend/ActivityController.h>
 #include <Backend/UserController.h>
+#include <Backend/SessionController.h>
+#include <Backend/AuthController.h>
 
 chronos::Backend::Backend(const BackendDesc& desc): 
-    Base(desc.base), m_acController(desc.acController), m_userController(desc.userController), m_port(desc.port)
+    Base(desc.base), 
+    m_acController(desc.acController), 
+    m_userController(desc.userController), 
+    m_sessionController(desc.sessionController),
+    m_authController(desc.authController),
+    m_port(desc.port)
 {
     registerRoutes();
 }
@@ -28,4 +35,6 @@ void chronos::Backend::registerRoutes()
 {
     m_acController.registerRoutes(m_app);
     m_userController.registerRoutes(m_app);
+    m_sessionController.registerRoutes(m_app);
+    m_authController.registerRoutes(m_app);
 }

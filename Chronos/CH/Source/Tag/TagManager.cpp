@@ -1,17 +1,19 @@
 #include <Tag/TagManager.h>
 #include <Storage/ITagStorage.h>
 #include <Tag/BuildinTags.h>
+#include <User/AuthContext.h>
 
 using namespace chronos;
 
 TagManager::TagManager(const TagManagerDesc& desc):
-	Base(desc.base), m_storage(desc.storage)
+	Base(desc.base), m_storage(desc.storage), m_authContext(desc.authContext)
 {
 }
 
 TagId TagManager::createTag(Tag& tag)
 {
-	if (m_currentUserId < 0)
+	auto userId = m_authContext.userId();
+	if (!userId)
 	{
 		ChronosLogWarning("Cannot create tag without valid user.");
 		return -1;
@@ -22,17 +24,18 @@ TagId TagManager::createTag(Tag& tag)
 		return -1;
 	}
 	tag.builtin = false;
-	return m_storage.createTag(m_currentUserId, tag);
+	return m_storage.createTag(*userId, tag);
 }
 
 bool TagManager::ensureBuiltinTags()
 {
-	if (m_currentUserId < 0) 
+	auto userId = m_authContext.userId();
+	if (!userId)
 	{
 		ChronosLogWarning("Cannot create builtin tags without valid user.");
 		return false;
 	}
-	return m_storage.ensureBuiltinTags(m_currentUserId);
+	return m_storage.ensureBuiltinTags(*userId);
 }
 
 bool TagManager::updateTag(const Tag&)
@@ -44,8 +47,6 @@ bool TagManager::removeTag(const Tag&)
 {
 	return false;
 }
-
-void TagManager::setCurrentUserId(UserId id) { m_currentUserId = id; }
 
 std::optional<Tag> TagManager::getTag(TagId id) const
 {
@@ -66,7 +67,14 @@ std::unordered_map<TagId, Tag> chronos::TagManager::getTagMap()
 void TagManager::updateTagMap()
 {
 	m_tagMap.clear();
-	auto tags = m_storage.getAllTags(m_currentUserId);
+	auto userId = m_authContext.userId();
+	if (!userId)
+	{
+		ChronosLogWarning("Fail to update TagMap with unauthoried userId.");
+		return;
+	}
+
+	auto tags = m_storage.getAllTags(*userId);
 	for (auto& tag : tags)
 	{
 		m_tagMap.emplace(tag.id, std::move(tag));

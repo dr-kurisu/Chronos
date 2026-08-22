@@ -1,11 +1,14 @@
-import './App.css'
-import Router from "./router"
+import "./App.css";
+import Router from "./router";
+import { AuthProvider } from "./auth/authProvider";
 
-function App() 
+function App()
 {
-  return (
-    <Router />
-  )
+    return (
+        <AuthProvider>
+            <Router />
+        </AuthProvider>
+    );
 }
 
-export default App
+export default App;

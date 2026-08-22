@@ -13,10 +13,11 @@ protected:	\
 
 namespace chronos {
 	using ActivityId = std::int64_t;
-	using Timestamp = std::int64_t;
+	using SessionId = std::string;
 	using UserId = int;
 	using TagId = int;
 	using PlanId = std::int64_t;
+	using Timestamp = std::int64_t;
 
 	class Application;
 	class Logger;
@@ -29,6 +30,7 @@ namespace chronos {
 	class IPlanStorage;
 	class IUserStorage;
 	class ITagStorage;
+	class ISessionStorage;
 	class ActivitySummary;
 	class SQLiteDatabase;
 
@@ -36,18 +38,27 @@ namespace chronos {
 	class ActivityManager;
 	class TagManager;
 	class PlanManager;
+
+
 	class WebViewController;
+	class ActivityController;
+	class UserController;
+	class SessionManager;
+	class SessionController;
+	class AuthController;
+
 	class Window;
 	class Rect;
 	class Backend;
-	class ActivityController;
-	class UserController;
+	class AuthContext;
 
 
 	struct Activity;
 	struct Plan;
 	struct WindowInfo;
 	struct Tag;
+	struct Session;
+
 
 
 	using i32 = int;

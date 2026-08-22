@@ -9,6 +9,7 @@ export interface LoginRequest {
 export interface RegisterRequest {
     username: string;
     password: string;
+    name: string;
 }
 
 export async function fetchCurrentUser(): Promise<User> {
@@ -27,7 +28,8 @@ export async function fetchCurrentUser(): Promise<User> {
 
 export async function registerUser(
     username: string,
-    password: string
+    password: string,
+    name: string
 ): Promise<void> {
     const response = await fetch(
         "/api/auth/register",
@@ -39,6 +41,7 @@ export async function registerUser(
             body: JSON.stringify({
                 username,
                 password,
+                name
             }),
         }
     );

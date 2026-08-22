@@ -22,6 +22,11 @@ find_package(GTest CONFIG REQUIRED)
 find_package(unofficial-webview2 CONFIG REQUIRED)
 find_package(unofficial-argon2 CONFIG REQUIRED)
 
+file(GLOB_RECURSE CHRONOS_CORE_HEADERS
+    CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/CH/Include/*.h"
+)
+
 set(CHRONOS_CORE_SOURCES
     CH/Source/Activity/ActivityClassifier.cpp
     CH/Source/Activity/ActivityManager.cpp
@@ -40,19 +45,24 @@ set(CHRONOS_CORE_SOURCES
     CH/Source/Storage/SQLitePlanStorage.cpp
     CH/Source/Storage/SQLiteTagStorage.cpp
     CH/Source/Storage/SQLiteUserStorage.cpp
+    CH/Source/Storage/SQLiteSessionStorage.cpp
     CH/Source/Tag/TagManager.cpp
     CH/Source/User/UserManager.cpp
+    CH/Source/User/SessionManager.cpp
     CH/Source/Window/Window.cpp
     CH/Source/Backend/Backend.cpp
     CH/Source/WebView/WebViewController.cpp
     CH/Source/Window/Window.cpp
     CH/Source/Backend/ActivityController.cpp
     CH/Source/Backend/UserController.cpp
+    CH/Source/Backend/SessionController.cpp
+    CH/Source/Backend/AuthController.cpp
+    CH/Source/User/AuthContext.cpp
 )
-
 
 add_library(chronos_core STATIC
     ${CHRONOS_CORE_SOURCES}
+    ${CHRONOS_CORE_HEADERS}
 )
 
 target_compile_features(chronos_core PUBLIC

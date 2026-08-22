@@ -15,14 +15,11 @@ namespace chronos
 
 	private:
 		crow::response getUser(const crow::request& req);
-		crow::response registerUser(const crow::request& req);
-		crow::response login(const crow::request& req);
-		crow::response logout(const crow::request& req);
 		crow::response updateUser(const crow::request& req);
 		crow::response removeUser(const crow::request& req);
 
 	private:
 		UserManager& m_userManager;
-		Application& m_application;
+		AuthContext& m_authContext;
 	};
 }

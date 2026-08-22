@@ -3,9 +3,13 @@
 #include <Activity/ActivityUtils.h>
 #include <Activity/ActivityClassifier.h>
 #include <Storage/SQLiteActivityStorage.h>
+#include <User/AuthContext.h>
 
 chronos::ActivityManager::ActivityManager(const ActivityManagerDesc& desc): 
-	Base(desc.base), minDuration(desc.minDuration), m_storage(desc.storage)
+	Base(desc.base), 
+    minDuration(desc.minDuration), 
+    m_storage(desc.storage),
+    m_authContext(desc.authContext)
 {
     m_classifier = std::make_unique<ActivityClassifier>(ActivityClassifierDesc{ desc.base });
 }
@@ -17,7 +21,10 @@ chronos::ActivityManager::~ActivityManager()
 void chronos::ActivityManager::createCurrentActivity(const WindowInfo& info)
 {
 	Activity ac{info};
-    ac.userId = m_currentUserId;
+    const auto userId = m_authContext.userId();
+
+    if (!userId) return;
+    ac.userId = *userId;
 	m_activities.push_back(ac);
     if (m_activities.size() > 100) m_activities.pop_front();
 }
@@ -97,16 +104,6 @@ void chronos::ActivityManager::onWindowChanged(const WindowInfo& info)
     m_storage.addTags(id, activity.tagIds);
     printCurrentActivity();
     createCurrentActivity(info);
-}
-
-void chronos::ActivityManager::setCurrentUserId(UserId userId) noexcept
-{
-    if (userId < 0) 
-    {
-        ChronosLogWarning("Failed to set current userId.");
-        return;
-    }
-    m_currentUserId = userId;
 }
 
 void chronos::ActivityManager::updateTagMap(std::unordered_map<TagId, Tag> map)

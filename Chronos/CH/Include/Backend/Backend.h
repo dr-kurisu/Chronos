@@ -26,5 +26,7 @@ namespace chronos
         crow::App<CorsMiddleware> m_app;
         ActivityController& m_acController;
         UserController& m_userController;
+        SessionController& m_sessionController;
+        AuthController& m_authController;
     };
 }

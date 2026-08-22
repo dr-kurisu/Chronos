@@ -19,14 +19,14 @@ namespace chronos {
 
 		void classifyCurrentActivity();
 		void onWindowChanged(const WindowInfo& info);
-		void setCurrentUserId(UserId userId) noexcept;
 		void updateTagMap(std::unordered_map<TagId, Tag> map);
 		void clear();
 	private:
 		std::deque<Activity> m_activities{};
 		UniquePtr<ActivityClassifier> m_classifier{};
+		AuthContext& m_authContext;
 		IActivityStorage& m_storage;
-		UserId m_currentUserId{-1};
+
 		std::chrono::seconds minDuration{ 10 };
 		std::unordered_map<TagId, Tag> m_tagMap;
 	};

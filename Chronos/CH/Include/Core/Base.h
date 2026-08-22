@@ -7,7 +7,7 @@ namespace chronos {
 	public:
 		explicit Base(const BaseDesc& desc);
 		virtual ~Base();
-		virtual Logger& getLogger() noexcept final;
+		virtual Logger& getLogger() const noexcept final;
 	protected:
 		Logger& m_logger;
 	};

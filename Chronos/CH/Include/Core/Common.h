@@ -45,6 +45,7 @@ namespace chronos {
 		std::chrono::seconds minDuration{ 10 };
 		size_t maxEventCacheSize = 128;
 		IActivityStorage& storage;
+		AuthContext& authContext;
 	};
 
 	struct SQLiteStorageDesc
@@ -63,12 +64,14 @@ namespace chronos {
 	{
 		BaseDesc base;
 		IUserStorage& storage;
+		AuthContext& authContext;
 	};
 
 	struct TagManagerDesc
 	{
 		BaseDesc base;
 		ITagStorage& storage;
+		AuthContext& authContext;
 	};
 
 	struct ActivitySummaryDesc
@@ -77,12 +80,19 @@ namespace chronos {
 		IActivityStorage& acStorage;
 		ITagStorage& tagStorage;
 		ISummaryGenerator& generator;
+		AuthContext& authContext;
 	};
 
 	struct PlanManagerDesc
 	{
 		BaseDesc base;
 		IPlanStorage& storage;
+	};
+
+	struct SessionManagerDesc 
+	{
+		BaseDesc base;
+		ISessionStorage& sessionStorage;
 	};
 
 	struct WindowDesc
@@ -96,6 +106,8 @@ namespace chronos {
 		BaseDesc base;
 		ActivityController& acController;
 		UserController& userController;
+		SessionController& sessionController;
+		AuthController& authController;
 		uint16_t port;
 	};
 
@@ -109,7 +121,22 @@ namespace chronos {
 	struct UserControllerDesc 
 	{
 		BaseDesc base;
-		Application& application;
 		UserManager& userManager;
+		AuthContext& authContext;
+	};
+
+	struct SessionControllerDesc
+	{
+		BaseDesc base;
+		SessionManager& sessionManager;
+		AuthContext& authContext;
+	};
+
+	struct AuthControllerDesc
+	{
+		BaseDesc base;
+		UserManager& userManager;
+		SessionManager& sessionManager;
+		AuthContext& authContext;
 	};
 };

@@ -3,7 +3,7 @@
 chronos::Application::Application(const ApplicationDesc& desc)
 {
 	initialiseLogger(desc);
-
+	initialiseAuthContext();
 	initialiseDatabase(desc);
 
 	if (desc.display) 
@@ -34,31 +34,23 @@ chronos::Logger& chronos::Application::getLogger() noexcept
 	return *m_logger;
 }
 
-bool chronos::Application::login(const std::string& username, const std::string& password)
+void chronos::Application::login(const std::string& username, const std::string& password)
 {
-	// auto result = m_userManager->login("TestUser", "TestPassword");
-	auto result = m_userManager->login(username, password);
-	if (!result) 
+	auto userId = m_userManager->login(username, password);
+	if (!userId) 
 	{
-		ChronosLogWarning("Failed to login test account");
-		return false;
+		ChronosLogError("Fail to login default account.");
+		return;
 	}
-	m_acManager->setCurrentUserId(m_userManager->getCurrentUserId());
-	m_tagManager->setCurrentUserId(m_userManager->getCurrentUserId());
-	m_acSummary->setCurrentUserId(m_userManager->getCurrentUserId());
+	m_authContext->setUserId(*userId);
 	// create builtin tags
 	m_tagManager->ensureBuiltinTags();
 	m_tagManager->updateTagMap();
 	m_acManager->updateTagMap(m_tagManager->getTagMap());
-	return true;
 }
 
 void chronos::Application::logout()
 {
-	m_userManager->logout();
-	m_acManager->setCurrentUserId(static_cast<UserId>(-1));
-	m_tagManager->setCurrentUserId(static_cast<UserId>(-1));
-	m_acSummary->setCurrentUserId(static_cast<UserId>(-1));
 }
 
 void chronos::Application::initialiseLogger(const ApplicationDesc& desc)
@@ -86,6 +78,11 @@ void chronos::Application::initialiseWebView(const ApplicationDesc& desc)
 		ChronosLogError("Failed to initialise WebView2.");
 	}
 }
+
+void chronos::Application::initialiseAuthContext()
+{
+	m_authContext = std::make_unique<AuthContext>();
+}
 	
 void chronos::Application::createWindow(const ApplicationDesc& desc)
 {
@@ -101,24 +98,28 @@ void chronos::Application::createWindow(const ApplicationDesc& desc)
 
 void chronos::Application::createManagers()
 {
-	m_userManager = std::make_unique<UserManager>(UserManagerDesc{ *m_logger, *m_userStorage });
+	m_userManager = std::make_unique<UserManager>(UserManagerDesc{ *m_logger, *m_userStorage, *m_authContext });
 	m_acManager = std::make_unique<ActivityManager>(
 		ActivityManagerDesc{
 			.base = *m_logger,
 			.minDuration = std::chrono::seconds{2},
-			.storage = *m_acStorage
+			.storage = *m_acStorage,
+			.authContext = *m_authContext
 		}
 	);
-	m_tagManager = std::make_unique<TagManager>(TagManagerDesc{ *m_logger, *m_tagStorage });
+	m_tagManager = std::make_unique<TagManager>(TagManagerDesc{ *m_logger, *m_tagStorage, *m_authContext });
+	m_sessionManager = std::make_unique<SessionManager>(SessionManagerDesc{ *m_logger, *m_sessionStorage });
 	ChronosLogInfo("Managers initialised.")
 }
 
 void chronos::Application::createStorages()
 {
-	m_acStorage = std::make_unique<SQLiteActivityStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
-	m_tagStorage = std::make_unique<SQLiteTagStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
-	m_userStorage = std::make_unique<SQLiteUserStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
-	m_planStorage = std::make_unique<SQLitePlanStorage>(SQLiteStorageDesc{ *m_logger, *m_db });
+	SQLiteStorageDesc storageDesc = { *m_logger, *m_db };
+	m_acStorage = std::make_unique<SQLiteActivityStorage>(storageDesc);
+	m_tagStorage = std::make_unique<SQLiteTagStorage>(storageDesc);
+	m_userStorage = std::make_unique<SQLiteUserStorage>(storageDesc);
+	m_planStorage = std::make_unique<SQLitePlanStorage>(storageDesc);
+	m_sessionStorage = std::make_unique<SQLiteSessionStorage>(storageDesc);
 	ChronosLogInfo("Storage layer initialised.");
 }
 
@@ -140,19 +141,24 @@ void chronos::Application::createActivitySummary()
 {
 	m_summaryGenerator = std::make_unique<RuleBasedSummaryGenerator>();
 	m_acSummary = std::make_unique<ActivitySummary>(ActivitySummaryDesc{ 
-		*m_logger, *m_acStorage, *m_tagStorage, *m_summaryGenerator 
-		});
+		*m_logger, *m_acStorage, *m_tagStorage, *m_summaryGenerator, * m_authContext
+	});
 	ChronosLogInfo("Activity summary service initialised.");
 }
 
 void chronos::Application::createBackend()
 {
 	m_activityController = std::make_unique<ActivityController>(ActivityControllerDesc{ *m_logger, *m_acSummary, *m_acManager });
-	m_userController = std::make_unique<UserController>(UserControllerDesc{ *m_logger, *this, *m_userManager });
+	m_userController = std::make_unique<UserController>(UserControllerDesc{ *m_logger, *m_userManager, *m_authContext });
+	m_sessionController = std::make_unique<SessionController>(SessionControllerDesc{ *m_logger, *m_sessionManager, *m_authContext });
+	m_authController = std::make_unique<AuthController>(AuthControllerDesc{ *m_logger, *m_userManager, *m_sessionManager, *m_authContext });
 	m_backend = std::make_unique<Backend>(BackendDesc{
 		*m_logger, 
 		*m_activityController, 
 		*m_userController,
+		*m_sessionController,
+		*m_authController,
 		18080 
 	});
+	ChronosLogInfo("Backend has started running at port 18080.");
 }

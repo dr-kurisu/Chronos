@@ -24,17 +24,20 @@ UserId SQLiteUserStorage::createUser(const User& user)
         (
             Name,
             PasswordHash,
-            CreatedTime
+            CreatedTime,
+            Username
         )
         VALUES
-        (?, ?, ?);
+        (?, ?, ?, ?);
     )";
     Statement stmt = m_db.prepare(sql);
     if (!stmt) return -1;
 
+
     sqlite3_bind_text(stmt.get(), 1, user.name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt.get(), 2, user.passwordHash.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int64(stmt.get(), 3, user.createdTime);
+    sqlite3_bind_text(stmt.get(), 4, user.username.c_str(), -1, SQLITE_TRANSIENT);
 
     if (!m_db.execute(stmt))
         return -1;
@@ -43,9 +46,9 @@ UserId SQLiteUserStorage::createUser(const User& user)
         sqlite3_last_insert_rowid(m_db.handle()));
 
     ChronosLogInfo(
-        "Created user successfully.   Id: {}, Name: {}",
+        "Created user successfully.   Id: {}, Username: {}",
         id,
-        user.name);
+        user.username);
     return id;
 }
 
@@ -61,6 +64,7 @@ bool SQLiteUserStorage::updateUser(const User& user)
         SET
             Name = ?,
             PasswordHash = ?
+            Username = ?
         WHERE
             Id = ?;
     )";
@@ -76,7 +80,8 @@ bool SQLiteUserStorage::updateUser(const User& user)
 
     sqlite3_bind_text(stmt.get(), 1, user.name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt.get(), 2, user.passwordHash.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int64(stmt.get(), 3, user.id);
+    sqlite3_bind_text(stmt.get(), 3, user.username.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int64(stmt.get(), 4, user.id);
 
     if (!m_db.execute(stmt)) return false;
 
@@ -85,7 +90,7 @@ bool SQLiteUserStorage::updateUser(const User& user)
         ChronosLogWarning("UserId: {} does not exist.", user.id);
         return false;
     }
-    ChronosLogInfo("Successfully update user with Id: {}, Name: {}", user.id, user.name);
+    ChronosLogInfo("Successfully update user with Id: {}, Username: {}", user.id, user.username);
     return true;
 }
 
@@ -131,6 +136,7 @@ std::optional<User> SQLiteUserStorage::findUser(UserId id)
     constexpr std::string_view sql = R"(
         SELECT
             Id,
+            Username,
             Name, 
             PasswordHash,
             CreatedTime
@@ -147,12 +153,14 @@ std::optional<User> SQLiteUserStorage::findUser(UserId id)
         User user;
         user.id = static_cast<UserId>(
             sqlite3_column_int64(stmt.get(), 0));
-        user.name = reinterpret_cast<const char*>(
+        user.username = reinterpret_cast<const char*>(
             sqlite3_column_text(stmt.get(), 1));
-        user.passwordHash = reinterpret_cast<const char*>(
+        user.name = reinterpret_cast<const char*>(
             sqlite3_column_text(stmt.get(), 2));
+        user.passwordHash = reinterpret_cast<const char*>(
+            sqlite3_column_text(stmt.get(), 3));
         user.createdTime = static_cast<Timestamp>(
-            sqlite3_column_int64(stmt.get(), 3));
+            sqlite3_column_int64(stmt.get(), 4));
         return user;
     }
 
@@ -165,23 +173,24 @@ std::optional<User> SQLiteUserStorage::findUser(UserId id)
     return std::nullopt;
 }
 
-std::optional<User> SQLiteUserStorage::findUserByName(std::string name)
+std::optional<User> SQLiteUserStorage::findUserByUsername(std::string username)
 {
     constexpr std::string_view sql = R"(
         SELECT
             Id,
+            Username,
             Name,
             PasswordHash,
             CreatedTime
         FROM Users
-        WHERE Name = ?;
+        WHERE Username = ?;
     )";
 
     Statement stmt = m_db.prepare(sql);
     if (!stmt)
         return std::nullopt;
 
-    sqlite3_bind_text(stmt.get(), 1, name.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt.get(), 1, username.c_str(), -1, SQLITE_TRANSIENT);
 
     const int result = sqlite3_step(stmt.get());
     if (result == SQLITE_ROW)
@@ -189,19 +198,21 @@ std::optional<User> SQLiteUserStorage::findUserByName(std::string name)
         User user;
         user.id = static_cast<UserId>(
             sqlite3_column_int64(stmt.get(), 0));
-        user.name = reinterpret_cast<const char*>(
+        user.username = reinterpret_cast<const char*>(
             sqlite3_column_text(stmt.get(), 1));
-        user.passwordHash = reinterpret_cast<const char*>(
+        user.name = reinterpret_cast<const char*>(
             sqlite3_column_text(stmt.get(), 2));
+        user.passwordHash = reinterpret_cast<const char*>(
+            sqlite3_column_text(stmt.get(), 3));
         user.createdTime = static_cast<Timestamp>(
-            sqlite3_column_int64(stmt.get(), 3));
+            sqlite3_column_int64(stmt.get(), 4));
         return user;
     }
 
     if (result != SQLITE_DONE)
     {
         ChronosLogError(
-            "Failed to find user by name: {}",
+            "Failed to find user by username: {}",
             sqlite3_errmsg(m_db.handle()));
     }
 
@@ -216,7 +227,8 @@ bool SQLiteUserStorage::createTable()
         CREATE TABLE IF NOT EXISTS Users
         (
             Id           INTEGER PRIMARY KEY AUTOINCREMENT,
-            Name         TEXT NOT NULL UNIQUE,
+            Username     TEXT NOT NULL UNIQUE,
+            Name         TEXT NOT NULL,
             PasswordHash TEXT NOT NULL,
             CreatedTime  INTEGER NOT NULL
         );

@@ -2,17 +2,28 @@
 #include <Analytics/ISummaryGenerator.h>
 #include <Storage/IActivityStorage.h>
 #include <Storage/ITagStorage.h>
+#include <User/AuthContext.h>
 
 using namespace chronos;
 
-ActivitySummary::ActivitySummary(const ActivitySummaryDesc& desc) : 
-    Base(desc.base), m_generator(desc.generator), m_tagStorage(desc.tagStorage), m_acStorage(desc.acStorage)
+ActivitySummary::ActivitySummary(const ActivitySummaryDesc& desc) :
+    Base(desc.base),
+    m_generator(desc.generator),
+    m_tagStorage(desc.tagStorage),
+    m_acStorage(desc.acStorage),
+    m_authContext(desc.authContext)
 {
 }
 
 Summary ActivitySummary::generate(Timestamp begin, Timestamp end)
 {
-    auto activities = m_acStorage.findActivities(m_currentUserId, begin, end);
+    const auto userId = m_authContext.userId();
+    if (!userId) 
+    {
+        ChronosLogWarning("Fail to generate AC Summary with unauthorised userId.");
+        return {};
+    }
+    auto activities = m_acStorage.findActivities(*userId, begin, end);
     // Generate Statistics Info
     Summary result{};
     calculateTagStatistics(result, activities);
@@ -27,7 +38,15 @@ std::chrono::seconds chronos::ActivitySummary::calculateTotalDuration(Timestamp 
 {
     const auto beginTime = Activity::convertTimestamp(begin);
     const auto endTime = Activity::convertTimestamp(end);
-    auto result = m_acStorage.findActivities(m_currentUserId, begin, end);
+
+    const auto userId = m_authContext.userId();
+    if (!userId)
+    {
+        ChronosLogWarning("Fail to generate AC Summary with unauthorised userId.");
+        return {};
+    }
+
+    auto result = m_acStorage.findActivities(*userId, begin, end);
     std::chrono::seconds totalDuration{0};
     for (auto& ac : result) 
     {
@@ -40,12 +59,6 @@ std::chrono::seconds chronos::ActivitySummary::calculateTotalDuration(Timestamp 
         }
     }
     return totalDuration;
-}
-
-void chronos::ActivitySummary::setCurrentUserId(UserId id)
-{
-    if (id < 0) return;
-    m_currentUserId = id;
 }
 
 

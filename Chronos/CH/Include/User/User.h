@@ -6,14 +6,16 @@
 namespace chronos {
 	struct User
 	{
-		UserId id{ -1 };
-		std::string name;
+		std::string username;
 		std::string passwordHash;
+
+		UserId id{ -1 };
+		std::string name{ "Default" };
 		Timestamp createdTime{};
 
 		bool isValid() const
 		{
-			return !name.empty() && !passwordHash.empty();
+			return !name.empty() && !passwordHash.empty() && !username.empty();
 		}
 	};
 }

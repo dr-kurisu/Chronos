@@ -2,15 +2,18 @@
 
 #include <crow.h>
 
-namespace chronos 
+namespace chronos
 {
+
     struct CorsMiddleware
     {
-        struct context {};
+        struct context
+        {
+        };
 
         void before_handle(
-            crow::request&,
-            crow::response&,
+            crow::request& req,
+            crow::response& res,
             context&)
         {
         }
@@ -34,6 +37,12 @@ namespace chronos
                 "Access-Control-Allow-Headers",
                 "Content-Type, Authorization"
             );
+
+            response.set_header(
+                "Access-Control-Allow-Credentials",
+                "true"
+            );
         }
     };
+
 }

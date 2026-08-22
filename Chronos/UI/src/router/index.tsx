@@ -6,8 +6,22 @@ import Plan from "../pages/Plan";
 import Timeline from "../pages/Timeline";
 import Settings from "../pages/Settings";
 import Analytics from "../pages/Analytics";
+import LoadingScreen from "../components/common/LoadingScreen";
+
+import { useAuth } from "../auth/authProvider";
 
 export default function Router() {
+    const { loading, authenticated } = useAuth();
+
+    if (loading)
+    {
+        return <LoadingScreen />;
+    }
+
+    if (!authenticated)
+    {
+        return <LoadingScreen />;
+    }
     return (
         <BrowserRouter>
             <Routes>

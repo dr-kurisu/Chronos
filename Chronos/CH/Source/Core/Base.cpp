@@ -10,7 +10,7 @@ Base::~Base()
 {
 }
 
-Logger& Base::getLogger() noexcept
+Logger& Base::getLogger() const noexcept
 {
 	return m_logger;
 }

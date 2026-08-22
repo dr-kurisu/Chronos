@@ -17,7 +17,7 @@ namespace chronos {
 
 		// Query
 		std::optional<User> findUser(UserId) override;
-		std::optional<User> findUserByName(std::string name) override;
+		std::optional<User> findUserByUsername(std::string) override;
 
 	private:
 		bool createTable();

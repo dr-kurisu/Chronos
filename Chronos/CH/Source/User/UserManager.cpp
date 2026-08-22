@@ -3,83 +3,61 @@
 #include <Storage/SQLiteUserStorage.h>
 #include <argon2.h>
 #include <bcrypt.h>
-#pragma comment(lib, "bcrypt.lib")
 
 using namespace chronos;
 
 UserManager::UserManager(const UserManagerDesc& desc) : m_storage(desc.storage), Base(desc.base)
 {
 	// Create TestUser
-	if (!m_storage.findUserByName("TestUser").has_value()) 
+	if (!m_storage.findUserByUsername("TestUsername").has_value()) 
 	{
-		registerUser("TestUser", "TestPassword");
+		registerUser("TestUsername", "TestPassword", "Alice");
 	}
 }
 
-bool UserManager::registerUser(const std::string& username, const std::string& password)
+std::optional<UserId> UserManager::registerUser(const std::string& username, const std::string& password, const std::string& name)
 {
 	// Check username and password
 	if (username.empty() || password.empty()) 
 	{
 		ChronosLogWarning("Fail to register User due to invalid username or password");
-		return false;
+		return std::nullopt;
 	}
-	if (m_storage.findUserByName(username))
+	if (m_storage.findUserByUsername(username))
 	{
 		ChronosLogWarning("Username already exists.");
-		return false;
+		return std::nullopt;
 	}
 	User newUser;
-	newUser.name = username;
+	newUser.username = username;
 	newUser.passwordHash = hashPassword(password);
+	newUser.name = name;
+	newUser.createdTime = Activity::convertTimePoint(std::chrono::system_clock::now());
+
 	if (!newUser.isValid()) 
 	{
 		ChronosLogWarning("Invalid user.");
-		return false;
+		return std::nullopt;
 	}
+
 	newUser.id = m_storage.createUser(newUser);
-	return newUser.id >= 0;
+	if (newUser.id < 0)
+		return std::nullopt;
+
+	return newUser.id;
 }
 
-bool UserManager::login(const std::string& username, const std::string& password)
+std::optional<UserId> UserManager::login(const std::string& username, const std::string& password)
 {
-    auto user = m_storage.findUserByName(username);
+    auto user = m_storage.findUserByUsername(username);
     if (!user)
     {
-        return false;
+        return std::nullopt;
     }
 
-    if (!verifyPassword(password, user->passwordHash)) return false;
+    if (!verifyPassword(password, user->passwordHash)) return std::nullopt;;
 
-    m_currentUser = *user;
-    return true;
-}
-
-void UserManager::logout()
-{
-	ChronosLogInfo("Logging out...");
-	m_currentUser = std::nullopt;
-}
-
-bool UserManager::isLoggedIn() const
-{
-	return m_currentUser.has_value();
-}
-
-std::optional<User> UserManager::getCurrentUser() const
-{
-	return m_currentUser;
-}
-
-UserId UserManager::getCurrentUserId() const
-{
-	if (m_currentUser.has_value()) 
-	{
-		return m_currentUser->id;
-	}else 
-	{
-		return -1;
-	}
+    return user->id;
 }
 
 std::array<uint8_t, 16> UserManager::generateSalt() const
@@ -127,4 +105,14 @@ std::string UserManager::hashPassword(const std::string& password) const
 		throw std::runtime_error(argon2_error_message(result));
 
 	return std::string(encoded);
+}
+
+std::optional<User> UserManager::findUser(const UserId userId) const
+{
+	if (userId < 0) 
+	{
+		ChronosLogWarning("Fail to get invalid user.");
+		return std::nullopt;
+	}
+	return m_storage.findUser(userId);
 }

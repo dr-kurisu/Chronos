@@ -16,6 +16,6 @@ namespace chronos {
 
 		// Query
 		virtual std::optional<User> findUser(UserId) = 0;
-		virtual std::optional<User> findUserByName(std::string name) = 0;
+		virtual std::optional<User> findUserByUsername(std::string) = 0;
 	};
 }
